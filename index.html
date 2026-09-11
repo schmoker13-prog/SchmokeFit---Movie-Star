@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SCHMOKEFIT - BAHAMA MAMA PROTOCOL</title>
+  <title>SCHMOKEFIT - MOVIE STAR APP</title>
   <style>
     :root {
-      --bg-color: #071318;
-      --card-bg: #0d1f26;
-      --card-border: #17333b;
-      --input-bg: #071318;
-      --input-border: #1b3a42;
-      --accent-blue: #00f0ff;
-      --accent-blue-dark: #00a8b8;
-      --accent-orange: #ff007f;
-      --accent-orange-hover: #d9006c;
+      --bg-color: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f293d;
+      --input-bg: #090d16;
+      --input-border: #1e293b;
+      --accent-blue: #00aaff;
+      --accent-blue-dark: #0077cc;
+      --accent-orange: #f59e0b;
+      --accent-orange-hover: #d97706;
       --accent-green: #10b981;
       --text-main: #f3f4f6;
       --text-muted: #9ca3af;
-      --badge-key: #00a8b8;
+      --badge-key: #0088cc;
       --badge-standard: #374151;
       --badge-supp: #374151;
       --danger: #ef4444;
@@ -68,22 +68,21 @@
     }
 
     .large-avatar-wrapper {
-      width: 160px;
-      height: 160px;
-      padding: 0;
-      background: transparent;
-      box-shadow: none;
-      border-radius: 24%;
-      overflow: hidden;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      padding: 4px;
+      background: linear-gradient(135deg, #00d2ff, #0066ff);
+      box-shadow: 0 0 25px rgba(0, 170, 255, 0.6);
       margin-bottom: 20px;
     }
 
     .large-avatar-img {
       width: 100%;
       height: 100%;
-      border-radius: 24%;
+      border-radius: 50%;
       object-fit: cover;
-      background: transparent;
+      background-color: #000;
       display: block;
     }
 
@@ -103,7 +102,7 @@
 
     .login-input:focus {
       border-color: var(--accent-blue);
-      box-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+      box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
     }
 
     .error-msg {
@@ -146,19 +145,18 @@
       transform: translateY(-50%);
       width: 56px;
       height: 56px;
-      padding: 0;
-      background: transparent;
-      box-shadow: none;
-      border-radius: 24%;
-      overflow: hidden;
+      border-radius: 50%;
+      padding: 2px;
+      background: linear-gradient(135deg, #00d2ff, #0066ff);
+      box-shadow: 0 0 12px rgba(0, 170, 255, 0.45);
     }
 
     .avatar-img {
       width: 100%;
       height: 100%;
-      border-radius: 24%;
+      border-radius: 50%;
       object-fit: cover;
-      background: transparent;
+      background-color: #000;
       display: block;
     }
 
@@ -223,8 +221,8 @@
 
     .header-guide-btn {
       color: var(--accent-blue);
-      background-color: rgba(0, 240, 255, 0.08);
-      border: 1px solid rgba(0, 240, 255, 0.35);
+      background-color: rgba(0, 170, 255, 0.08);
+      border: 1px solid rgba(0, 170, 255, 0.35);
     }
 
     .header-guide-btn:hover,
@@ -292,7 +290,7 @@
     .tab-btn.active {
       background-color: var(--accent-blue);
       color: #ffffff;
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 10px rgba(0, 170, 255, 0.4);
     }
 
     /* SECTION HEADER */
@@ -385,7 +383,7 @@
     /* INFO CALLOUT CARD */
     .info-card {
       background-color: #0f172a;
-      border: 1px solid #1b3a42;
+      border: 1px solid #1e293b;
       border-radius: 10px;
       padding: 12px;
       font-size: 0.78rem;
@@ -459,7 +457,7 @@
     }
 
     .btn-dark {
-      background-color: #1b3a42;
+      background-color: #1e293b;
       color: var(--text-main);
     }
 
@@ -470,7 +468,7 @@
       padding: 12px;
       font-size: 0.85rem;
       margin-top: 8px;
-      box-shadow: 0 4px 12px rgba(0, 240, 255, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 170, 255, 0.3);
     }
 
     .btn-blue:active {
@@ -488,7 +486,7 @@
     }
 
     .btn-outline:active {
-      background-color: rgba(0, 240, 255, 0.1);
+      background-color: rgba(0, 170, 255, 0.1);
     }
 
     .btn-danger-sm {
@@ -553,7 +551,7 @@
     .phase-toggle-btn.active {
       background-color: var(--accent-blue);
       color: #ffffff;
-      box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 8px rgba(0, 170, 255, 0.4);
     }
 
     /* EXERCISE BLOCK & SET TABLE */
@@ -566,7 +564,7 @@
 
     .exercise-card.completed {
       border: 2px solid var(--accent-blue) !important;
-      box-shadow: 0 0 14px rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 14px rgba(0, 170, 255, 0.4);
     }
 
     .exercise-header {
@@ -670,7 +668,7 @@
 
     /* MACRO CALCULATOR */
     .macro-display-box {
-      background-color: #0b2026;
+      background-color: #0d1527;
       border: 1px dashed var(--accent-blue);
       border-radius: 10px;
       padding: 14px;
@@ -760,7 +758,7 @@
       margin-top: 10px;
     }
     .nutrition-stat {
-      background:#0b2026;
+      background:#0d1527;
       border:1px solid var(--input-border);
       border-radius:10px;
       padding:10px;
@@ -773,14 +771,14 @@
     .macro-progress-label { font-weight:800; color:#fff; }
     .macro-progress-numbers { text-align:right; font-size:.64rem; color:var(--text-muted); white-space:nowrap; }
     .macro-progress-numbers strong { color:var(--accent-blue); font-weight:900; }
-    .macro-progress-track { height:8px; border-radius:999px; background:#071318; overflow:hidden; border:1px solid #1b3a42; }
+    .macro-progress-track { height:8px; border-radius:999px; background:#090d16; overflow:hidden; border:1px solid #1e293b; }
     .macro-progress-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--accent-blue),#34d399); transition:width .25s ease; }
-    .meal-section { border-top:1px solid #1b3a42; padding-top:10px; margin-top:10px; }
+    .meal-section { border-top:1px solid #1e293b; padding-top:10px; margin-top:10px; }
     .meal-header { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
     .meal-title { font-size:.72rem; font-weight:900; color:var(--accent-orange); letter-spacing:.5px; }
     .meal-add-btn { border:1px solid var(--accent-blue); background:transparent; color:var(--accent-blue); border-radius:6px; padding:5px 8px; font-size:.62rem; font-weight:800; cursor:pointer; }
     .food-row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:8px; align-items:center; padding:8px 5px; border-bottom:1px solid rgba(255,255,255,.04); border-radius:7px; cursor:pointer; transition:background .18s ease, border-color .18s ease; }
-    .food-row:hover, .food-row:active { background:rgba(0,240,255,.07); }
+    .food-row:hover, .food-row:active { background:rgba(0,170,255,.07); }
     .food-name { font-size:.72rem; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .food-macros { font-size:.62rem; color:var(--text-muted); }
     .food-amount { font-size:.62rem; color:var(--accent-blue); font-weight:800; white-space:nowrap; }
@@ -791,7 +789,7 @@
     .nutrition-search-row { display:flex; gap:6px; }
     .nutrition-search-row input { flex:1; min-width:0; }
     .search-results { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
-    .search-result { background:#0b2026; border:1px solid var(--input-border); border-radius:8px; padding:9px; }
+    .search-result { background:#0d1527; border:1px solid var(--input-border); border-radius:8px; padding:9px; }
     .search-result-top { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
     .search-result-name { font-size:.72rem; font-weight:800; line-height:1.25; }
     .search-result-meta { font-size:.62rem; color:var(--text-muted); margin-top:3px; }
@@ -817,7 +815,7 @@
       display:none;
       margin-top:10px;
       padding:10px;
-      background:#0b2026;
+      background:#0d1527;
       border:1px solid var(--input-border);
       border-radius:10px;
     }
@@ -829,7 +827,7 @@
       overflow:hidden;
       border-radius:8px;
       background:#050913;
-      border:1px solid #1b3a42;
+      border:1px solid #1e293b;
       margin-top:8px;
     }
     .barcode-status {
@@ -876,10 +874,10 @@
 
 
     /* TRAINING FOCUS SELECTOR */
-    .focus-card { border:1px solid var(--accent-blue); background:#0b2026; }
+    .focus-card { border:1px solid var(--accent-blue); background:#0b1323; }
     .focus-toggle-container { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; margin-top:8px; }
     .focus-toggle-btn { background:transparent; border:1px solid var(--input-border); color:var(--text-muted); padding:8px 4px; border-radius:7px; font-size:.62rem; font-weight:900; letter-spacing:.4px; cursor:pointer; text-transform:uppercase; }
-    .focus-toggle-btn.active { background:var(--accent-blue); color:#00111a; border-color:var(--accent-blue); box-shadow:0 0 10px rgba(0,240,255,.28); }
+    .focus-toggle-btn.active { background:var(--accent-blue); color:#00111a; border-color:var(--accent-blue); box-shadow:0 0 10px rgba(0,170,255,.28); }
     .focus-active-text { margin-top:8px; font-size:.68rem; color:var(--text-muted); line-height:1.4; }
     .focus-active-text strong { color:var(--accent-orange); }
 
@@ -905,7 +903,7 @@
       border:1px solid var(--accent-blue);
       border-radius:16px;
       padding:18px;
-      box-shadow:0 18px 50px rgba(0,0,0,.55), 0 0 22px rgba(0,240,255,.16);
+      box-shadow:0 18px 50px rgba(0,0,0,.55), 0 0 22px rgba(0,170,255,.16);
       text-align:center;
     }
     .program-reset-kicker {
@@ -948,7 +946,7 @@
     .program-reset-focus-btn.current {
       border-color:var(--accent-blue);
       color:var(--accent-blue);
-      box-shadow:0 0 8px rgba(0,240,255,.18);
+      box-shadow:0 0 8px rgba(0,170,255,.18);
     }
 
 
@@ -1020,8 +1018,8 @@
       display:flex;
       align-items:flex-end;
       justify-content:center;
-      background:#071318;
-      border:1px solid #1b3a42;
+      background:#090d16;
+      border:1px solid #1e293b;
       border-radius:5px 5px 0 0;
       overflow:hidden;
     }
@@ -1084,10 +1082,10 @@
 
   </style>
     <!-- iPhone / iPad -->
-<link rel="apple-touch-icon" href="bahama-icon.png">
+<link rel="apple-touch-icon" href="schmokefit-icon.png">
 
 <!-- Standard browser icon -->
-<link rel="icon" type="image/png" href="bahama-icon.png">
+<link rel="icon" type="image/png" href="schmokefit-icon.png">
 
 <!-- Android / PWA -->
 <link rel="manifest" href="manifest.json">
@@ -1105,7 +1103,7 @@
   <!-- INITIAL LOGIN / REGISTER SCREEN -->
   <div id="loginOverlay">
     <div class="large-avatar-wrapper">
-      <img src="avatar.jpg" alt="Avatar" class="large-avatar-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300f0ff\' stroke-width=\'1.5\'><circle cx=\'12\' cy=\'8\' r=\'4\'/><path d=\'M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2\'/></svg>'">
+      <img src="avatar.jpg" alt="Avatar" class="large-avatar-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300aaff\' stroke-width=\'1.5\'><circle cx=\'12\' cy=\'8\' r=\'4\'/><path d=\'M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2\'/></svg>'">
     </div>
     <div class="brand-title" style="font-size: 1.8rem;">SCHMOKE<span>FIT</span></div>
     <div class="brand-subtitle" style="font-size: 0.9rem;" id="loginSubheading">USER ACCESS</div>
@@ -1133,10 +1131,10 @@
     <!-- HEADER BRANDING -->
     <div class="header-card">
       <div class="avatar-wrapper">
-        <img src="avatar.jpg" alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300f0ff\' stroke-width=\'1.5\'><circle cx=\'12\' cy=\'8\' r=\'4\'/><path d=\'M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2\'/></svg>'">
+        <img src="avatar.jpg" alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300aaff\' stroke-width=\'1.5\'><circle cx=\'12\' cy=\'8\' r=\'4\'/><path d=\'M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2\'/></svg>'">
       </div>
       <div class="brand-title">SCHMOKE<span>FIT</span></div>
-      <div class="brand-subtitle">BAHAMA MAMA PROTOCOL</div>
+      <div class="brand-subtitle">MOVIE STAR APP</div>
 
       <div class="header-actions">
         <div class="user-greeting" id="headerUserGreeting">ATHLETE</div>
@@ -1156,61 +1154,76 @@
 
     <!-- 00. INTRO TAB -->
     <div id="introTab" class="tab-content active">
-      <div class="section-title-banner">00. BAHAMA MAMA PROTOCOL</div>
-
+      <div class="section-title-banner">00. MOVIE STAR PROTOCOL</div>
+      
+      <!-- MINIMALIST GUIDE -->
       <div class="card info-card">
-        <div class="info-subtitle">THE FEMALE SCULPT GUIDE</div>
-        <p>Built for efficient full-body training with an emphasis on glutes, legs, posture, core strength, and feeling athletic. The goal is a sustainable program that can adapt to how and where you want to train.</p>
+        <div class="info-subtitle">THE MINIMALIST GUIDE</div>
+        <p>Built on absolute efficiency, this protocol prioritizes heavy key lifts, optimal recovery, and flexible nutrition so you build a dense, powerful physique without living in the gym.</p>
       </div>
 
+      <!-- TRAINING BLUEPRINT -->
       <div class="card info-card">
         <div class="info-subtitle">01. TRAINING BLUEPRINT</div>
-        <p style="margin-bottom:8px;"><strong>PHILOSOPHY:</strong> 3 full-body sessions per week with a full recovery day between workouts whenever possible.</p>
-        <p style="margin-bottom:6px;"><strong>REVERSE PYRAMID / PYRAMID TRAINING:</strong></p>
-        <ul style="margin-left:16px; margin-bottom:8px;">
-          <li><strong>Set 1:</strong> Challenging weight for roughly 8–10 reps.</li>
-          <li><strong>Set 2:</strong> Reduce the load slightly and target 10–12 reps.</li>
-          <li><strong>Set 3:</strong> Reduce again and target 12–15 reps.</li>
-          <li><strong>Rest:</strong> About 2 minutes for main lifts and 60–90 seconds for smaller movements.</li>
+        <p style="margin-bottom: 8px;"><strong>PHILOSOPHY:</strong> 3 intense workouts per week, training to or near failure on every set. Follow each session with a full day of rest. Maximum effort followed by maximum recovery.</p>
+        <p style="margin-bottom: 6px;"><strong>REVERSE PYRAMID TRAINING (RPT):</strong></p>
+        <ul style="margin-left: 16px; margin-bottom: 8px;">
+          <li><strong>Set 1 (Heavy):</strong> Target 4–6 reps (Heaviest Weight).</li>
+          <li><strong>Set 2 (Medium):</strong> Drop weight ~10–20%, target 6–8 reps.</li>
+          <li><strong>Set 3 (Light):</strong> Drop weight another ~10–20%, target 8–10 reps.</li>
+          <li><strong>Rest Period:</strong> Rest 2.5 to 3 minutes between all sets.</li>
         </ul>
-        <p>⏱️ <strong>TIME CRUNCH:</strong> Prioritize the key lifts and skip optional isolation work when needed.</p>
+        <p>⏱️ <strong>TIME CRUNCH RULE:</strong> If time is short, perform only the Key Lifts for that day and skip supplemental work.</p>
       </div>
 
+
+      <!-- TRAINING FOCUS OPTIONS -->
       <div class="card info-card">
-        <div class="info-subtitle">02. CHOOSE YOUR TRAINING STYLE</div>
-        <p style="margin-bottom:8px;">The core Bahama Mama structure stays simple, but you can choose the version that best matches your goal and equipment.</p>
-        <p style="margin-bottom:5px;"><strong>TONE & TIGHTEN:</strong> The original Bahama Mama workouts exactly as designed. This is the default.</p>
-        <p style="margin-bottom:5px;"><strong>BUILD MUSCLE:</strong> Keeps the original exercises and adds one extra volume movement each day.</p>
-        <p style="margin-bottom:8px;"><strong>HOME / BODYWEIGHT:</strong> Uses bodyweight, resistance bands, and light dumbbells so the entire program can be done at home.</p>
-        <p style="font-size:.72rem; color:var(--text-muted);">You can switch styles anytime from the Workout tab.</p>
+        <div class="info-subtitle">02. CHOOSE YOUR FOCUS</div>
+        <p style="margin-bottom:8px;">The Movie Star Protocol keeps the original 3-day workout intact and makes only small Monday and Friday adjustments based on the area you want to emphasize most.</p>
+        <p style="margin-bottom:5px;"><strong>SHOULDERS:</strong> Broader delts and a stronger V-taper. This is the default program.</p>
+        <p style="margin-bottom:5px;"><strong>ARMS:</strong> More direct biceps and triceps work for added size and definition.</p>
+        <p style="margin-bottom:5px;"><strong>CHEST:</strong> More pressing and chest-focused volume for upper-body thickness.</p>
+        <p style="margin-bottom:8px;"><strong>LEGS:</strong> More quad, hamstring, and lower-body volume while keeping the upper body balanced.</p>
+        <p style="font-size:0.72rem; color:var(--text-muted);">Wednesday stays essentially the same across every focus. Your key lifts and overall workout length stay intact; only a small amount of Monday and Friday accessory work changes. You can switch focus anytime from the Workout tab.</p>
       </div>
 
+      <!-- 18-WEEK TRAINING CYCLE -->
       <div class="card info-card">
         <div class="info-subtitle">03. THE 18-WEEK RESET</div>
-        <p style="margin-bottom:8px;"><strong>TRAIN IN BLOCKS:</strong> Bahama Mama is designed as an 18-week cycle instead of one routine you repeat forever.</p>
-        <p style="margin-bottom:8px;">After you complete <strong>Week 18</strong>, the app asks whether you want to keep your current style or choose <strong>Tone & Tighten, Build Muscle, or Home / Bodyweight.</strong></p>
-        <p style="margin-bottom:8px;">After your choice, the week counter resets to <strong>Week 1</strong> for a fresh 18-week block.</p>
-        <p style="font-size:.72rem; color:var(--text-muted);"><strong>WHY RESET?</strong> It gives you a clear finish line and a natural time to reassess your goals, equipment, and training style.</p>
+        <p style="margin-bottom:8px;"><strong>TRAIN IN BLOCKS:</strong> The Movie Star Protocol is designed as an 18-week training cycle rather than one workout plan you repeat forever.</p>
+        <p style="margin-bottom:8px;">After you complete <strong>Week 18</strong>, the app will prompt you to either keep your current training focus or choose a new focus: <strong>Shoulders, Arms, Chest, or Legs.</strong></p>
+        <p style="margin-bottom:8px;">Once you make your selection, your program automatically resets to <strong>Week 1</strong> for a fresh 18-week block. The core program stays familiar, while the focus option makes small changes to Monday and Friday so you can emphasize a different area without completely changing what works.</p>
+        <p style="font-size:0.72rem; color:var(--text-muted);"><strong>WHY RESET?</strong> It gives you a clear finish line, a chance to reassess your goals, and a simple way to refresh your training instead of running the exact same emphasis indefinitely.</p>
       </div>
 
+      <!-- NUTRITION BLUEPRINT -->
       <div class="card info-card">
-        <div class="info-subtitle">04. FEMALE NUTRITION BLUEPRINT</div>
-        <p style="margin-bottom:8px;">Body composition still comes down largely to consistent calories, adequate protein, and a plan you can sustain.</p>
-        <p style="margin-bottom:4px;">• <strong>Fat Loss Target:</strong> Bodyweight (lbs) × 12</p>
-        <p style="margin-bottom:8px;">• <strong>Protein Target:</strong> About bodyweight (lbs) × 0.8g</p>
-        <p style="font-size:.72rem; color:var(--text-muted);">Use the Macros tab to calculate targets and log food directly inside the app.</p>
+        <div class="info-subtitle">03. NO-BS NUTRITION BLUEPRINT</div>
+        <p style="margin-bottom: 8px;">Hitting your physique goals comes down to tracking two core metrics: <strong>Calories</strong> and <strong>Protein</strong>.</p>
+        <p style="margin-bottom: 4px;">• <strong>Daily Calorie Target (Deficit):</strong> Bodyweight (lbs) × 13</p>
+        <p style="margin-bottom: 8px;">• <strong>Daily Protein Target:</strong> Bodyweight (lbs) × 0.82g</p>
+        <p style="font-size:0.72rem; color:#64748b; margin-bottom:10px;">*Note: Use your target bodyweight if you have significant weight to lose.</p>
+        <p><strong>TRACKING & FLEXIBLE EATING:</strong></p>
+        <ul style="margin-left: 16px; margin-top: 4px;">
+          <li><strong>Tracking App:</strong> Log everything using Cronometer or MyFitnessPal.</li>
+          <li><strong>Food Scale:</strong> Recommended for weighing food precisely at home.</li>
+          <li><strong>Flexible Nutrition:</strong> You don't need 100% "clean" meals. Fast food like McDonald's works as long as it fits your daily calorie and protein targets!</li>
+        </ul>
       </div>
 
+      <!-- PHASE PROGRESSION -->
       <div class="card info-card">
         <div class="info-subtitle">05. PHASE PROGRESSION</div>
-        <p style="margin-bottom:8px;">• <strong>Weeks 1–10 — Tone & Trim:</strong> Use the nutrition goal that matches your current objective while progressing the workouts.</p>
-        <p style="margin-bottom:8px;">• <strong>Weeks 11–18 — Body Recomp:</strong> Continue progressing while adjusting calories toward maintenance when appropriate.</p>
-        <p>• <strong>Week 18 Reset:</strong> Choose your next training style, return to Week 1, and recalculate macros if your goal or bodyweight changed.</p>
+        <p style="margin-bottom: 8px;">• <strong>Weeks 1–10 (The Fat Loss Deficit):</strong> Maintain a consistent caloric deficit while preserving dense muscle mass.</p>
+        <p style="margin-bottom: 8px;">• <strong>6–8 Weeks (The Recomp Phase):</strong> Add 200 calories to your daily intake every two weeks, slowly working into a slight surplus.</p>
+        <p>• <strong>Reset & Repeat:</strong> Recalculate using Bodyweight × 13 at your new lean weight and repeat as needed.</p>
       </div>
 
+      <!-- RECOVERY NOTE -->
       <div class="card info-card">
         <div class="info-subtitle">OFF DAYS & RECOVERY</div>
-        <p>Use rest days for recovery, walking, mobility, or other light activity that leaves you ready for the next training session.</p>
+        <p>Muscle is built during recovery. Take advantage of off days and weekends to rest fully. Do as little physical activity as possible on rest days.</p>
       </div>
     </div>
 
@@ -1222,7 +1235,7 @@
       <div class="week-tracker-card">
         <div class="week-tracker-header">
           <div class="week-title" id="weekDisplayTitle">WEEK 1</div>
-          <div class="phase-badge" id="phaseDisplayBadge">PHASE 1: TONE & TRIM</div>
+          <div class="phase-badge" id="phaseDisplayBadge">PHASE 1: FAT LOSS DEFICIT</div>
         </div>
         <div class="week-progress-text" id="weekProgressSubtext">Workouts Logged This Week: 0 / 3</div>
         <div class="week-controls">
@@ -1232,13 +1245,14 @@
       </div>
 
       <div class="card focus-card">
-        <div style="font-size:0.75rem; font-weight:900; color:var(--accent-blue);">TRAINING STYLE</div>
-        <div class="focus-toggle-container" style="grid-template-columns:repeat(3,1fr);">
-          <button class="focus-toggle-btn active" id="focusBtn-tone" onclick="setTrainingFocus('tone', this)">TONE & TIGHTEN</button>
-          <button class="focus-toggle-btn" id="focusBtn-muscle" onclick="setTrainingFocus('muscle', this)">BUILD MUSCLE</button>
-          <button class="focus-toggle-btn" id="focusBtn-home" onclick="setTrainingFocus('home', this)">HOME / BODYWEIGHT</button>
+        <div style="font-size:0.75rem; font-weight:900; color:var(--accent-blue);">TRAINING FOCUS</div>
+        <div class="focus-toggle-container">
+          <button class="focus-toggle-btn active" id="focusBtn-shoulders" onclick="setTrainingFocus('shoulders', this)">SHOULDERS</button>
+          <button class="focus-toggle-btn" id="focusBtn-arms" onclick="setTrainingFocus('arms', this)">ARMS</button>
+          <button class="focus-toggle-btn" id="focusBtn-chest" onclick="setTrainingFocus('chest', this)">CHEST</button>
+          <button class="focus-toggle-btn" id="focusBtn-legs" onclick="setTrainingFocus('legs', this)">LEGS</button>
         </div>
-        <div class="focus-active-text" id="focusActiveText"><strong>TONE & TIGHTEN ACTIVE</strong> — the original Bahama Mama workout exactly as designed.</div>
+        <div class="focus-active-text" id="focusActiveText"><strong>SHOULDERS FOCUS ACTIVE</strong> — extra weekly shoulder volume while preserving the core 3-day Movie Star structure.</div>
       </div>
 
       <div class="info-card">
@@ -1264,9 +1278,9 @@
       <div style="margin-top: 4px;">
         <label class="select-label">SELECT WORKOUT DAY:</label>
         <select class="custom-select" id="workoutDaySelect" onchange="loadWorkoutDay()">
-          <option value="monday">Monday: Glutes, Legs & Shoulders</option>
-          <option value="wednesday">Wednesday: Quads, Core & Back</option>
-          <option value="friday">Friday: Hamstrings, Glutes & Arms</option>
+          <option value="monday">Monday: Chest & Biceps</option>
+          <option value="wednesday">Wednesday: Lower Body</option>
+          <option value="friday">Friday: Shoulders, Back & Arms</option>
         </select>
       </div>
 
@@ -1293,20 +1307,20 @@
         
         <label class="select-label">SELECT GOAL PHASE:</label>
         <div class="phase-toggle-container">
-          <button class="phase-toggle-btn active" id="phaseBtn-cut" onclick="setMacroPhase('cut', 12, this)">FAT LOSS (×12)</button>
-          <button class="phase-toggle-btn" id="phaseBtn-maint" onclick="setMacroPhase('maint', 14, this)">MAINT. (×14)</button>
-          <button class="phase-toggle-btn" id="phaseBtn-bulk" onclick="setMacroPhase('bulk', 16, this)">LEAN TONE (×16)</button>
+          <button class="phase-toggle-btn active" id="phaseBtn-cut" onclick="setMacroPhase('cut', 13, this)">CUTTING (×13)</button>
+          <button class="phase-toggle-btn" id="phaseBtn-maint" onclick="setMacroPhase('maint', 15, this)">MAINT. (×15)</button>
+          <button class="phase-toggle-btn" id="phaseBtn-bulk" onclick="setMacroPhase('bulk', 17, this)">LEAN BULK (×17)</button>
         </div>
 
         <label class="select-label">CURRENT / TARGET BODYWEIGHT (LBS):</label>
-        <input type="number" id="bodyWeightInput" class="custom-select" value="135" oninput="calculateMacros()">
+        <input type="number" id="bodyWeightInput" class="custom-select" value="180" oninput="calculateMacros()">
 
         <div class="macro-display-box">
           <div class="macro-sublabel" id="calorieTargetSublabel">DAILY CALORIE DEFICIT TARGET</div>
-          <div class="macro-val" id="calorieTargetVal">1,620 kcal</div>
-          <div style="border-bottom:1px dashed #1b3a42; margin:8px 0;"></div>
+          <div class="macro-val" id="calorieTargetVal">2,340 kcal</div>
+          <div style="border-bottom:1px dashed #1e293b; margin:8px 0;"></div>
           <div class="macro-sublabel">DAILY PROTEIN TARGET</div>
-          <div class="macro-val protein" id="proteinTargetVal">108 g</div>
+          <div class="macro-val protein" id="proteinTargetVal">148 g</div>
         </div>
       </div>
 
@@ -1322,12 +1336,12 @@
         <div class="macro-progress-wrap">
           <div class="macro-progress-row">
             <span class="macro-progress-label">Calories</span>
-            <span class="macro-progress-numbers"><strong id="calorieConsumedText">0 consumed</strong> • <span id="calorieRemainingText">1,620 remaining</span></span>
+            <span class="macro-progress-numbers"><strong id="calorieConsumedText">0 consumed</strong> • <span id="calorieRemainingText">2,340 remaining</span></span>
           </div>
           <div class="macro-progress-track"><div class="macro-progress-fill" id="calorieProgressFill"></div></div>
           <div class="macro-progress-row" style="margin-top:8px;">
             <span class="macro-progress-label">Protein</span>
-            <span class="macro-progress-numbers"><strong id="proteinConsumedText">0g consumed</strong> • <span id="proteinRemainingText">108g remaining</span></span>
+            <span class="macro-progress-numbers"><strong id="proteinConsumedText">0g consumed</strong> • <span id="proteinRemainingText">148g remaining</span></span>
           </div>
           <div class="macro-progress-track"><div class="macro-progress-fill" id="proteinProgressFill"></div></div>
         </div>
@@ -1448,11 +1462,11 @@
         </div>
         <div class="habit-item">
           <input type="checkbox">
-          <div>🥗 <strong>Protein Anchor:</strong> Included a meaningful protein source in meals today.</div>
+          <div>☕ <strong>Fasted Caffeine Delay:</strong> Waited 45+ minutes after waking before caffeine.</div>
         </div>
         <div class="habit-item">
           <input type="checkbox">
-          <div>🚶‍♀️ <strong>Daily Movement:</strong> Got in a walk or other light activity outside the workout.</div>
+          <div>🫧 <strong>Hunger Blunting Check:</strong> Drank sparkling water to blunt hunger during fast.</div>
         </div>
         <div class="habit-item">
           <input type="checkbox">
@@ -1498,17 +1512,18 @@
   <div class="program-reset-overlay" id="programResetOverlay">
     <div class="program-reset-card">
       <div class="program-reset-kicker">18-WEEK BLOCK COMPLETE</div>
-      <div class="program-reset-title">START YOUR NEXT BAHAMA MAMA CYCLE</div>
+      <div class="program-reset-title">START YOUR NEXT TRAINING CYCLE</div>
       <div class="program-reset-copy">
-        You finished the full Bahama Mama training block. Keep your current training style or choose a new one before restarting at Week 1.
+        You finished the full Movie Star training block. Keep your current focus or choose a new one before restarting at Week 1. Changing focus can help keep training fresh without changing the core program.
       </div>
       <div class="program-reset-copy" id="programResetCurrentFocus"></div>
-      <button class="btn btn-blue" id="keepCurrentFocusBtn" onclick="startNewProgramCycle(currentTrainingFocus)">KEEP CURRENT STYLE</button>
-      <div style="font-size:.62rem; color:var(--text-muted); margin-top:12px; text-transform:uppercase; font-weight:800;">OR CHOOSE A NEW STYLE</div>
-      <div class="program-reset-focus-grid" style="grid-template-columns:repeat(3,1fr);">
-        <button class="program-reset-focus-btn" id="resetFocus-tone" onclick="startNewProgramCycle('tone')">TONE & TIGHTEN</button>
-        <button class="program-reset-focus-btn" id="resetFocus-muscle" onclick="startNewProgramCycle('muscle')">BUILD MUSCLE</button>
-        <button class="program-reset-focus-btn" id="resetFocus-home" onclick="startNewProgramCycle('home')">HOME / BODYWEIGHT</button>
+      <button class="btn btn-blue" id="keepCurrentFocusBtn" onclick="startNewProgramCycle(currentTrainingFocus)">KEEP CURRENT FOCUS</button>
+      <div style="font-size:.62rem; color:var(--text-muted); margin-top:12px; text-transform:uppercase; font-weight:800;">OR CHOOSE A NEW FOCUS</div>
+      <div class="program-reset-focus-grid">
+        <button class="program-reset-focus-btn" id="resetFocus-shoulders" onclick="startNewProgramCycle('shoulders')">SHOULDERS</button>
+        <button class="program-reset-focus-btn" id="resetFocus-arms" onclick="startNewProgramCycle('arms')">ARMS</button>
+        <button class="program-reset-focus-btn" id="resetFocus-chest" onclick="startNewProgramCycle('chest')">CHEST</button>
+        <button class="program-reset-focus-btn" id="resetFocus-legs" onclick="startNewProgramCycle('legs')">LEGS</button>
       </div>
     </div>
   </div>
@@ -1517,13 +1532,13 @@
 
   <script>
     // TRACKER & AUTH STATE
-    let currentWeek = parseInt(localStorage.getItem('schmokefit_bm_week') || '1');
-    let weeklyWorkoutCount = parseInt(localStorage.getItem('schmokefit_bm_wk_count') || '0');
+    let currentWeek = parseInt(localStorage.getItem('schmokefit_week') || '1');
+    let weeklyWorkoutCount = parseInt(localStorage.getItem('schmokefit_wk_count') || '0');
     let activeExercises = [];
-    let currentMacroMultiplier = 12;
+    let currentMacroMultiplier = 13;
     let currentMacroPhaseMode = 'cut';
-    let currentTrainingFocus = localStorage.getItem('schmokefit_bm_training_focus') || 'tone';
-    let programResetPending = localStorage.getItem('schmokefit_bm_cycle_reset_pending') === 'true';
+    let currentTrainingFocus = localStorage.getItem('schmokefit_training_focus') || 'shoulders';
+    let programResetPending = localStorage.getItem('schmokefit_cycle_reset_pending') === 'true';
     const USDA_API_KEY = 'DEMO_KEY'; // Prototype key. Replace with a private backend proxy before public release.
     const nutritionMeals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
     let activeNutritionMeal = 'Breakfast';
@@ -1541,7 +1556,7 @@
       const errorMsg = document.getElementById('masterError');
 
       if (input === "schmokefit") {
-        localStorage.setItem('schmokefit_bm_master_unlocked', 'true');
+        localStorage.setItem('schmokefit_master_unlocked', 'true');
         errorMsg.style.display = 'none';
         initAuthScreen();
       } else {
@@ -1557,7 +1572,7 @@
 
     // SETUP INITIAL AUTH SCREEN
     function initAuthScreen() {
-      const masterUnlocked = localStorage.getItem('schmokefit_bm_master_unlocked');
+      const masterUnlocked = localStorage.getItem('schmokefit_master_unlocked');
       const initialMasterForm = document.getElementById('initialMasterForm');
       const authForm = document.getElementById('authForm');
       const sub = document.getElementById('loginSubheading');
@@ -1577,7 +1592,7 @@
       initialMasterForm.style.display = 'none';
       authForm.style.display = 'block';
 
-      const storedUser = localStorage.getItem('schmokefit_bm_user');
+      const storedUser = localStorage.getItem('schmokefit_user');
 
       if (!storedUser) {
         sub.innerText = "CREATE YOUR ACCOUNT";
@@ -1597,8 +1612,8 @@
       const pass = document.getElementById('passwordInput').value.trim();
       const errorMsg = document.getElementById('loginError');
 
-      const storedUser = localStorage.getItem('schmokefit_bm_user');
-      const storedPass = localStorage.getItem('schmokefit_bm_pass');
+      const storedUser = localStorage.getItem('schmokefit_user');
+      const storedPass = localStorage.getItem('schmokefit_pass');
 
       if (!user || !pass) {
         errorMsg.innerText = "PLEASE ENTER BOTH USERNAME & PASSWORD";
@@ -1608,14 +1623,14 @@
 
       if (!storedUser) {
         // Register new local account
-        localStorage.setItem('schmokefit_bm_user', user);
-        localStorage.setItem('schmokefit_bm_pass', pass);
-        sessionStorage.setItem('schmokefit_bm_authenticated', 'true');
+        localStorage.setItem('schmokefit_user', user);
+        localStorage.setItem('schmokefit_pass', pass);
+        sessionStorage.setItem('schmokefit_authenticated', 'true');
         unlockApp(user);
       } else {
         // Validate credentials
         if (user.toLowerCase() === storedUser.toLowerCase() && pass === storedPass) {
-          sessionStorage.setItem('schmokefit_bm_authenticated', 'true');
+          sessionStorage.setItem('schmokefit_authenticated', 'true');
           unlockApp(user);
         } else {
           errorMsg.innerText = "INCORRECT USERNAME OR PASSWORD";
@@ -1625,7 +1640,7 @@
     }
 
     function handleLogout() {
-      sessionStorage.removeItem('schmokefit_bm_authenticated');
+      sessionStorage.removeItem('schmokefit_authenticated');
       document.getElementById('appContainer').style.display = 'none';
       document.getElementById('loginOverlay').style.display = 'flex';
       document.body.style.alignItems = 'center';
@@ -1638,9 +1653,9 @@
 
     function resetUserAccount() {
       if (confirm("Reset current saved login details? You can then create a new username and password.")) {
-        localStorage.removeItem('schmokefit_bm_user');
-        localStorage.removeItem('schmokefit_bm_pass');
-        localStorage.removeItem('schmokefit_bm_has_logged_in_before');
+        localStorage.removeItem('schmokefit_user');
+        localStorage.removeItem('schmokefit_pass');
+        localStorage.removeItem('schmokefit_has_logged_in_before');
         document.getElementById('passwordInput').value = '';
         document.getElementById('loginError').style.display = 'none';
         initAuthScreen();
@@ -1674,164 +1689,63 @@
       }
 
       // DYNAMIC FIRST-TIME LANDING TAB SELECTION
-      const hasLoggedInBefore = localStorage.getItem('schmokefit_bm_has_logged_in_before');
+      const hasLoggedInBefore = localStorage.getItem('schmokefit_has_logged_in_before');
       if (hasLoggedInBefore) {
         const workoutTabBtn = document.getElementById('tabBtn-workoutTab');
         switchTab('workoutTab', workoutTabBtn);
       } else {
-        localStorage.setItem('schmokefit_bm_has_logged_in_before', 'true');
+        localStorage.setItem('schmokefit_has_logged_in_before', 'true');
         switchTab('introTab', null);
       }
     }
 
     // EXERCISE SUBSTITUTION DATABASE
     const exerciseSubstitutions = {
-      "Barbell Hip Thrusts":["Barbell Hip Thrusts","Smith Machine Hip Thrusts","Single-Leg Hip Thrusts","Glute Bridge"],
-      "Dumbbell Shoulder Press":["Dumbbell Shoulder Press","Standing Arnold Press","Machine Shoulder Press","DB Push Press"],
-      "Bulgarian Split Squats":["Bulgarian Split Squats","Reverse Deficit Lunges","Walking Dumbbell Lunges","Step-Ups"],
-      "Standing Lateral Raises":["Standing Lateral Raises","Cable Lateral Raises","Seated Leaning Lateral Raises"],
-      "Cable Kickbacks":["Cable Kickbacks","Glute Medius Cable Abductions","Resistance Band Kickbacks","Hyperextensions"],
-      "Goblet Squats":["Goblet Squats","Leg Press","Barbell Front Squats","Hack Squats"],
-      "Lat Pulldowns":["Lat Pulldowns","Assisted Pull-Ups","Neutral-Grip Pulldown","Seated Cable Rows"],
-      "Incline Dumbbell Press":["Incline Dumbbell Press","Push-Ups (or Kneeling)","Incline Machine Chest Press","Dumbbell Flyes"],
-      "Hanging Leg Raises":["Hanging Leg Raises","Lying Leg Raises","Ab Wheel Rollouts","Plank Shoulder Taps"],
-      "Glute-Focused Hyperextensions":["Glute-Focused Hyperextensions","Cable Pull-Throughs","Single-Leg RDLs"],
-      "Romanian Deadlifts (RDLs)":["Romanian Deadlifts (RDLs)","Dumbbell RDLs","Single-Leg DB RDLs","Sumo DB Deadlifts"],
-      "Seated Cable Rows":["Seated Cable Rows","Single-Arm DB Rows","Chest-Supported Row","Bent-Over DB Rows"],
-      "Lying Leg Curls":["Lying Leg Curls","Seated Leg Curls","Swiss Ball Hamstring Curls","Nordic Curls"],
-      "Incline DB Bicep Curls":["Incline DB Bicep Curls","Standing DB Curls","Hammer Curls","Cable Bicep Curls"],
-      "Rope Tricep Pushdowns":["Rope Tricep Pushdowns","Overhead Cable Tricep Ext.","Bench Dips","Skullcrushers"],
-      "Dumbbell Romanian Deadlifts":["Dumbbell Romanian Deadlifts","Single-Leg DB RDLs","Sumo DB Deadlifts","Good Mornings"],
-      "Resistance Band Hip Abductions":["Resistance Band Hip Abductions","Banded Clamshells","Lateral Band Walks","Standing Band Abductions"],
-      "Dumbbell Glute Bridges":["Dumbbell Glute Bridges","Bodyweight Glute Bridges","Single-Leg Glute Bridges","Frog Pumps"],
-      "Dumbbell or Bodyweight Glute Bridges":["Dumbbell or Bodyweight Glute Bridges","Single-Leg Glute Bridges","Frog Pumps","Banded Glute Bridges"],
-      "Light Dumbbell Shoulder Press":["Light Dumbbell Shoulder Press","Band Shoulder Press","Arnold Press","Pike Push-Ups"],
-      "Reverse Lunges":["Reverse Lunges","Bodyweight Split Squats","Step-Ups","Walking Lunges"],
-      "Band or Light DB Lateral Raises":["Band or Light DB Lateral Raises","Light DB Lateral Raises","Band Lateral Raises"],
-      "Resistance Band Kickbacks":["Resistance Band Kickbacks","Donkey Kicks","Fire Hydrants","Banded Glute Bridges"],
-      "Bodyweight or Goblet Squats":["Bodyweight or Goblet Squats","Tempo Bodyweight Squats","Sumo Squats","Chair Squats"],
-      "Resistance Band Rows":["Resistance Band Rows","One-Arm Light DB Rows","Bent-Over Light DB Rows","Band Pull-Aparts"],
-      "Incline or Kneeling Push-Ups":["Incline or Kneeling Push-Ups","Wall Push-Ups","Standard Push-Ups","Light DB Floor Press"],
-      "Lying Leg Raises":["Lying Leg Raises","Dead Bugs","Reverse Crunches","Plank Knee Drives"],
-      "Bird Dogs":["Bird Dogs","Dead Bugs","Planks","Bear Plank Shoulder Taps"],
-      "Light DB Single-Leg RDLs":["Light DB Single-Leg RDLs","Bodyweight Single-Leg RDLs","Banded Good Mornings","Light DB RDLs"],
-      "Towel Hamstring Curls":["Towel Hamstring Curls","Slider Hamstring Curls","Glute Bridge Walkouts","Swiss Ball Hamstring Curls"],
-      "Light DB Bicep Curls":["Light DB Bicep Curls","Band Bicep Curls","Hammer Curls","Alternating DB Curls"],
-      "Band Tricep Extensions":["Band Tricep Extensions","Bench Tricep Dips","Light DB Overhead Extensions","Close-Grip Push-Ups"]
+      "Incline Barbell Bench": ["Incline Barbell Bench", "Incline DB Press", "Incline Smith Machine Press", "Incline Chest Press Machine"],
+      "Flat Barbell Bench Press": ["Flat Barbell Bench Press", "Flat DB Bench Press", "Weighted Dips", "Chest Press Machine"],
+      "Standing DB Bicep Curls": ["Standing DB Bicep Curls", "Incline DB Curls", "Barbell Curls", "EZ-Bar Preacher Curls", "Hammer Curls"],
+      "Overhead Cable Tricep Ext.": ["Overhead Cable Tricep Ext.", "Tricep Rope Pushdowns", "Skullcrushers", "Close-Grip Bench Press"],
+      "Standing Overhead Press": ["Standing Overhead Press", "Seated DB Shoulder Press", "Arnold Press", "Overhead Smith Press"],
+      "Standing Lateral Raises": ["Standing Lateral Raises", "Seated Leaning Lateral Raises", "Cable Lateral Raises"],
+      "Seated Leaning Lateral Raises": ["Seated Leaning Lateral Raises", "Standing Lateral Raises", "Cable Lateral Raises"],
+      "Face Pulls": ["Face Pulls", "Reverse Cable Flyes", "Rear Delt DB Flyes"],
+      "Weighted Pull-Ups": ["Weighted Pull-Ups", "Lat Pulldowns", "Chin-Ups", "Neutral-Grip Lat Pulldown"],
+      "Seated V-Bar Cable Rows": ["Seated V-Bar Cable Rows", "Barbell Bent-Over Rows", "Chest-Supported DB Rows", "One-Arm DB Rows"],
+      "Bulgarian Split Squats": ["Bulgarian Split Squats", "Barbell Back Squats", "Goblet Squats", "Leg Press"],
+      "Nordic Curls": ["Nordic Curls", "Lying Leg Curls", "Seated Leg Curls", "Romanian Deadlifts"],
+      "Standing Calf Raises": ["Standing Calf Raises", "Seated Calf Raises", "Leg Press Calf Raises"],
+      "Leg Extensions": ["Leg Extensions", "Sissy Squats", "Goblet Squats"],
+      "Leg Press or Barbell Squat": ["Leg Press or Barbell Squat", "Barbell Back Squat", "Leg Press", "Hack Squat"],
+      "Incline Barbell Bench Press": ["Incline Barbell Bench Press", "Incline Dumbbell Press", "Incline Machine Press", "Weighted Push-Ups"],
+      "Weighted Pull-Ups": ["Weighted Pull-Ups", "Pull-Ups", "Lat Pulldowns", "Neutral-Grip Pulldowns"],
+      "Dumbbell Shoulder Press": ["Dumbbell Shoulder Press", "Machine Shoulder Press", "Arnold Press", "Overhead Press"],
+      "Lateral Raises": ["Lateral Raises", "Cable Lateral Raises", "Machine Lateral Raises", "Lean-Away Lateral Raises"],
+      "Barbell Squats": ["Barbell Squats", "Front Squats", "Hack Squats", "Leg Press"],
+      "Chest-Supported Rows": ["Chest-Supported Rows", "Seated Cable Rows", "Single-Arm DB Rows", "Machine Rows"],
+      "Dips": ["Dips", "Weighted Dips", "Close-Grip Bench Press", "Push-Ups"],
+      "Romanian Deadlifts": ["Romanian Deadlifts", "Dumbbell RDLs", "Good Mornings", "45° Back Extensions"],
+      "Hanging Leg Raises": ["Hanging Leg Raises", "Lying Leg Raises", "Ab Wheel Rollouts", "Cable Crunches"],
+      "Overhead Press": ["Overhead Press", "Dumbbell Shoulder Press", "Machine Shoulder Press", "Arnold Press"],
+      "Chin-Ups": ["Chin-Ups", "Weighted Chin-Ups", "Neutral-Grip Pulldowns", "Lat Pulldowns"],
+      "Incline Dumbbell Press": ["Incline Dumbbell Press", "Incline Barbell Bench Press", "Machine Chest Press", "Weighted Push-Ups"],
+      "Rear Delt Flyes": ["Rear Delt Flyes", "Reverse Pec Deck", "Face Pulls", "Cable Rear Delt Flyes"],
+      "Cable Lateral Raises": ["Cable Lateral Raises", "Dumbbell Lateral Raises", "Machine Lateral Raises", "Lean-Away Lateral Raises"],
+      "Incline Dumbbell Curls": ["Incline Dumbbell Curls", "Preacher Curls", "Cable Curls", "Alternating DB Curls"],
+      "Rope Tricep Pushdowns": ["Rope Tricep Pushdowns", "Straight-Bar Pushdowns", "Overhead Cable Tricep Extensions", "Bench Dips"],
+      "Close-Grip Bench Press": ["Close-Grip Bench Press", "Weighted Dips", "JM Press", "Machine Press"],
+      "Hammer Curls": ["Hammer Curls", "Cross-Body Hammer Curls", "Rope Hammer Curls", "Incline DB Curls"],
+      "EZ-Bar Curls": ["EZ-Bar Curls", "Barbell Curls", "Preacher Curls", "Cable Curls"],
+      "Overhead Cable Tricep Extensions": ["Overhead Cable Tricep Extensions", "Skull Crushers", "Rope Pushdowns", "Single-Arm Cable Extensions"],
+      "Flat Dumbbell Bench Press": ["Flat Dumbbell Bench Press", "Flat Barbell Bench Press", "Machine Chest Press", "Weighted Push-Ups"],
+      "Cable Flyes": ["Cable Flyes", "Pec Deck", "Dumbbell Flyes", "Low-to-High Cable Flyes"],
+      "Push-Ups": ["Push-Ups", "Weighted Push-Ups", "Machine Chest Press", "Dips"],
+      "Machine Chest Press": ["Machine Chest Press", "Flat Dumbbell Bench Press", "Flat Barbell Bench Press", "Weighted Push-Ups"],
+      "Leg Press": ["Leg Press", "Hack Squats", "Front Squats", "Goblet Squats"],
+      "Standing Calf Raises": ["Standing Calf Raises", "Seated Calf Raises", "Leg Press Calf Raises", "Single-Leg Calf Raises"],
+      "Walking Lunges": ["Walking Lunges", "Reverse Lunges", "Step-Ups", "Bulgarian Split Squats"],
+      "Front Squats": ["Front Squats", "Hack Squats", "Leg Press", "Goblet Squats"],
+      "Lying Leg Curls": ["Lying Leg Curls", "Seated Leg Curls", "Nordic Curls", "Swiss Ball Leg Curls"]
     };
-
-
-    // BAHAMA MAMA TRAINING STYLES
-    // Tone & Tighten preserves the original workout exactly.
-    const defaultRoutines = {
-      monday: [
-        { name: "Barbell Hip Thrusts", badge: "KEY LIFT", badgeClass: "badge-key" },
-        { name: "Dumbbell Shoulder Press", badge: "KEY LIFT", badgeClass: "badge-key" },
-        { name: "Bulgarian Split Squats", badge: "STANDARD", badgeClass: "badge-standard" },
-        { name: "Standing Lateral Raises", badge: "SUPP.", badgeClass: "badge-supp" },
-        { name: "Cable Kickbacks", badge: "GLUTE SHAPE", badgeClass: "badge-supp" }
-      ],
-      wednesday: [
-        { name: "Goblet Squats", badge: "KEY LIFT", badgeClass: "badge-key" },
-        { name: "Lat Pulldowns", badge: "KEY LIFT", badgeClass: "badge-key" },
-        { name: "Incline Dumbbell Press", badge: "STANDARD", badgeClass: "badge-standard" },
-        { name: "Hanging Leg Raises", badge: "CORE", badgeClass: "badge-supp" },
-        { name: "Glute-Focused Hyperextensions", badge: "OPTIONAL", badgeClass: "badge-optional" }
-      ],
-      friday: [
-        { name: "Romanian Deadlifts (RDLs)", badge: "KEY LIFT", badgeClass: "badge-key" },
-        { name: "Seated Cable Rows", badge: "KEY LIFT", badgeClass: "badge-key" },
-        { name: "Lying Leg Curls", badge: "SUPERSET", badgeClass: "badge-superset" },
-        { name: "Incline DB Bicep Curls", badge: "SUPERSET", badgeClass: "badge-superset" },
-        { name: "Rope Tricep Pushdowns", badge: "SUPP.", badgeClass: "badge-supp" }
-      ]
-    };
-
-    const focusRoutines = {
-      tone: {
-        monday: [...defaultRoutines.monday],
-        wednesday: [...defaultRoutines.wednesday],
-        friday: [...defaultRoutines.friday]
-      },
-
-      muscle: {
-        monday: [
-          ...defaultRoutines.monday,
-          { name: "Dumbbell Romanian Deadlifts", badge: "EXTRA VOLUME", badgeClass: "badge-supp" }
-        ],
-        wednesday: [
-          ...defaultRoutines.wednesday,
-          { name: "Resistance Band Hip Abductions", badge: "EXTRA VOLUME", badgeClass: "badge-supp" }
-        ],
-        friday: [
-          ...defaultRoutines.friday,
-          { name: "Dumbbell Glute Bridges", badge: "EXTRA VOLUME", badgeClass: "badge-supp" }
-        ]
-      },
-
-      home: {
-        monday: [
-          { name: "Dumbbell or Bodyweight Glute Bridges", badge: "KEY LIFT", badgeClass: "badge-key" },
-          { name: "Light Dumbbell Shoulder Press", badge: "KEY LIFT", badgeClass: "badge-key" },
-          { name: "Reverse Lunges", badge: "STANDARD", badgeClass: "badge-standard" },
-          { name: "Band or Light DB Lateral Raises", badge: "SUPP.", badgeClass: "badge-supp" },
-          { name: "Resistance Band Kickbacks", badge: "GLUTE SHAPE", badgeClass: "badge-supp" }
-        ],
-        wednesday: [
-          { name: "Bodyweight or Goblet Squats", badge: "KEY LIFT", badgeClass: "badge-key" },
-          { name: "Resistance Band Rows", badge: "KEY LIFT", badgeClass: "badge-key" },
-          { name: "Incline or Kneeling Push-Ups", badge: "STANDARD", badgeClass: "badge-standard" },
-          { name: "Lying Leg Raises", badge: "CORE", badgeClass: "badge-supp" },
-          { name: "Bird Dogs", badge: "OPTIONAL", badgeClass: "badge-optional" }
-        ],
-        friday: [
-          { name: "Light DB Single-Leg RDLs", badge: "KEY LIFT", badgeClass: "badge-key" },
-          { name: "Resistance Band Rows", badge: "KEY LIFT", badgeClass: "badge-key" },
-          { name: "Towel Hamstring Curls", badge: "SUPERSET", badgeClass: "badge-superset" },
-          { name: "Light DB Bicep Curls", badge: "SUPERSET", badgeClass: "badge-superset" },
-          { name: "Band Tricep Extensions", badge: "SUPP.", badgeClass: "badge-supp" }
-        ]
-      }
-    };
-
-    const focusDescriptions = {
-      tone: "the original Bahama Mama workout exactly as designed.",
-      muscle: "the original routine with one extra volume movement each day.",
-      home: "a home-friendly version using bodyweight, resistance bands, and light dumbbells."
-    };
-
-    const focusDisplayNames = {
-      tone: "Tone & Tighten",
-      muscle: "Build Muscle",
-      home: "Home / Bodyweight"
-    };
-
-    function setTrainingFocus(focus, btn = null) {
-      if (!focusRoutines[focus]) focus = "tone";
-
-      currentTrainingFocus = focus;
-      localStorage.setItem("schmokefit_bm_training_focus", focus);
-
-      document.querySelectorAll(".focus-toggle-btn").forEach(button => button.classList.remove("active"));
-
-      const activeButton = btn || document.getElementById(`focusBtn-${focus}`);
-      if (activeButton) activeButton.classList.add("active");
-
-      const label = document.getElementById("focusActiveText");
-      if (label) {
-        label.innerHTML = `<strong>${focusDisplayNames[focus].toUpperCase()} ACTIVE</strong> — ${focusDescriptions[focus]}`;
-      }
-
-      loadWorkoutDay();
-    }
-
-    function restoreTrainingFocus() {
-      if (!focusRoutines[currentTrainingFocus]) currentTrainingFocus = "tone";
-      setTrainingFocus(
-        currentTrainingFocus,
-        document.getElementById(`focusBtn-${currentTrainingFocus}`)
-      );
-    }
 
     function updateWeekTrackerDisplay() {
       currentWeek = Math.min(18, Math.max(1, currentWeek));
@@ -1840,19 +1754,19 @@
 
       const badge = document.getElementById('phaseDisplayBadge');
       if (currentWeek <= 10) {
-        badge.innerText = "PHASE 1: TONE & TRIM";
+        badge.innerText = "PHASE 1: FAT LOSS DEFICIT";
       } else {
-        badge.innerText = "PHASE 2: BODY RECOMP";
+        badge.innerText = "PHASE 2: RECOMP PHASE";
       }
 
-      localStorage.setItem('schmokefit_bm_week', currentWeek.toString());
-      localStorage.setItem('schmokefit_bm_wk_count', weeklyWorkoutCount.toString());
+      localStorage.setItem('schmokefit_week', currentWeek.toString());
+      localStorage.setItem('schmokefit_wk_count', weeklyWorkoutCount.toString());
     }
 
     function adjustWeek(delta) {
       if (delta > 0 && currentWeek >= 18) {
         weeklyWorkoutCount = 0;
-        localStorage.setItem('schmokefit_bm_wk_count', '0');
+        localStorage.setItem('schmokefit_wk_count', '0');
         markProgramResetPending();
         openProgramResetPrompt();
         return;
@@ -1865,38 +1779,175 @@
 
     function markProgramResetPending() {
       programResetPending = true;
-      localStorage.setItem('schmokefit_bm_cycle_reset_pending', 'true');
+      localStorage.setItem('schmokefit_cycle_reset_pending', 'true');
     }
 
     function openProgramResetPrompt() {
       const overlay = document.getElementById('programResetOverlay');
       if (!overlay) return;
-      const focusName = focusDisplayNames[currentTrainingFocus] || 'Tone & Tighten';
+
+      const focusName = currentTrainingFocus.charAt(0).toUpperCase() + currentTrainingFocus.slice(1);
       const currentText = document.getElementById('programResetCurrentFocus');
       const keepBtn = document.getElementById('keepCurrentFocusBtn');
-      if (currentText) currentText.innerHTML = `Current style: <strong style="color:var(--accent-blue);">${focusName}</strong>`;
-      if (keepBtn) keepBtn.innerText = `KEEP ${focusName.toUpperCase()}`;
+
+      if (currentText) currentText.innerHTML = `Current focus: <strong style="color:var(--accent-blue);">${focusName}</strong>`;
+      if (keepBtn) keepBtn.innerText = `KEEP ${focusName.toUpperCase()} FOCUS`;
+
       document.querySelectorAll('.program-reset-focus-btn').forEach(btn => btn.classList.remove('current'));
       document.getElementById(`resetFocus-${currentTrainingFocus}`)?.classList.add('current');
+
       overlay.classList.add('open');
     }
 
     function startNewProgramCycle(focus) {
-      if (!focusRoutines[focus]) focus = currentTrainingFocus || 'tone';
+      if (!focusRoutines[focus]) focus = currentTrainingFocus || 'shoulders';
+
       currentWeek = 1;
       weeklyWorkoutCount = 0;
       programResetPending = false;
-      localStorage.setItem('schmokefit_bm_week', '1');
-      localStorage.setItem('schmokefit_bm_wk_count', '0');
-      localStorage.removeItem('schmokefit_bm_cycle_reset_pending');
+
+      localStorage.setItem('schmokefit_week', '1');
+      localStorage.setItem('schmokefit_wk_count', '0');
+      localStorage.removeItem('schmokefit_cycle_reset_pending');
+
       setTrainingFocus(focus);
       updateWeekTrackerDisplay();
-      document.getElementById('programResetOverlay')?.classList.remove('open');
-      alert(`New 18-week Bahama Mama cycle started! Style: ${focusDisplayNames[focus]}. You're back to Week 1.`);
+
+      const overlay = document.getElementById('programResetOverlay');
+      if (overlay) overlay.classList.remove('open');
+
+      alert(`New 18-week training cycle started! Focus: ${focus.toUpperCase()}. You're back to Week 1.`);
+    }
+
+    // BASE ROUTINES DATA - ORIGINAL MOVIE STAR PROGRAM WITH SUBTLE FOCUS VARIATIONS
+    const focusRoutines = {
+      // DEFAULT: the original Movie Star workout exactly as it was before focus options were added.
+      shoulders: {
+        monday: [
+          { name: "Incline Barbell Bench", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Standing DB Bicep Curls", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Flat Barbell Bench Press", badge: "STANDARD", badgeClass: "badge-standard" },
+          { name: "Face Pulls", badge: "SUPP.", badgeClass: "badge-supp" },
+          { name: "Standing Lateral Raises", badge: "SUPP.", badgeClass: "badge-supp" }
+        ],
+        wednesday: [
+          { name: "Bulgarian Split Squats", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Standing Calf Raises", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Nordic Curls", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Leg Extensions", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Leg Press or Barbell Squat", badge: "OPTIONAL", badgeClass: "badge-optional" }
+        ],
+        friday: [
+          { name: "Standing Overhead Press", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Weighted Pull-Ups", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Overhead Cable Tricep Ext.", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Seated V-Bar Cable Rows", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Seated Leaning Lateral Raises", badge: "SUPP.", badgeClass: "badge-supp" }
+        ]
+      },
+
+      // ARMS: only Monday and Friday change slightly. Wednesday remains the original leg day.
+      arms: {
+        monday: [
+          { name: "Incline Barbell Bench", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Standing DB Bicep Curls", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Flat Barbell Bench Press", badge: "STANDARD", badgeClass: "badge-standard" },
+          { name: "Rope Tricep Pushdowns", badge: "FOCUS", badgeClass: "badge-supp" },
+          { name: "Standing Lateral Raises", badge: "SUPP.", badgeClass: "badge-supp" }
+        ],
+        wednesday: [
+          { name: "Bulgarian Split Squats", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Standing Calf Raises", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Nordic Curls", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Leg Extensions", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Leg Press or Barbell Squat", badge: "OPTIONAL", badgeClass: "badge-optional" }
+        ],
+        friday: [
+          { name: "Standing Overhead Press", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Weighted Pull-Ups", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Overhead Cable Tricep Ext.", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Seated V-Bar Cable Rows", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Hammer Curls", badge: "FOCUS", badgeClass: "badge-supp" }
+        ]
+      },
+
+      // CHEST: only Monday and Friday get a small chest-volume bump.
+      chest: {
+        monday: [
+          { name: "Incline Barbell Bench", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Standing DB Bicep Curls", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Flat Barbell Bench Press", badge: "STANDARD", badgeClass: "badge-standard" },
+          { name: "Cable Flyes", badge: "FOCUS", badgeClass: "badge-supp" },
+          { name: "Standing Lateral Raises", badge: "SUPP.", badgeClass: "badge-supp" }
+        ],
+        wednesday: [
+          { name: "Bulgarian Split Squats", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Standing Calf Raises", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Nordic Curls", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Leg Extensions", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Leg Press or Barbell Squat", badge: "OPTIONAL", badgeClass: "badge-optional" }
+        ],
+        friday: [
+          { name: "Standing Overhead Press", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Weighted Pull-Ups", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Overhead Cable Tricep Ext.", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Seated V-Bar Cable Rows", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Incline Dumbbell Press", badge: "FOCUS", badgeClass: "badge-supp" }
+        ]
+      },
+
+      // LEGS: preserve the original Wednesday leg day and add one lower-body movement Monday + Friday.
+      legs: {
+        monday: [
+          { name: "Incline Barbell Bench", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Standing DB Bicep Curls", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Flat Barbell Bench Press", badge: "STANDARD", badgeClass: "badge-standard" },
+          { name: "Bulgarian Split Squats", badge: "FOCUS", badgeClass: "badge-supp" },
+          { name: "Standing Lateral Raises", badge: "SUPP.", badgeClass: "badge-supp" }
+        ],
+        wednesday: [
+          { name: "Bulgarian Split Squats", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Standing Calf Raises", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Nordic Curls", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Leg Extensions", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Leg Press or Barbell Squat", badge: "OPTIONAL", badgeClass: "badge-optional" }
+        ],
+        friday: [
+          { name: "Standing Overhead Press", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Weighted Pull-Ups", badge: "KEY LIFT", badgeClass: "badge-key" },
+          { name: "Overhead Cable Tricep Ext.", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Seated V-Bar Cable Rows", badge: "SUPERSET", badgeClass: "badge-superset" },
+          { name: "Romanian Deadlifts", badge: "FOCUS", badgeClass: "badge-supp" }
+        ]
+      }
+    };
+
+    const focusDescriptions = {
+      shoulders: 'the original Movie Star workout, with shoulder emphasis on Monday and Friday.',
+      arms: 'the original program with a small increase in direct arm work on Monday and Friday.',
+      chest: 'the original program with a small increase in chest work on Monday and Friday.',
+      legs: 'the original program with one added lower-body emphasis movement on Monday and Friday.'
+    };
+
+    function setTrainingFocus(focus, btn = null) {
+      if (!focusRoutines[focus]) focus = 'shoulders';
+      currentTrainingFocus = focus;
+      localStorage.setItem('schmokefit_training_focus', focus);
+      document.querySelectorAll('.focus-toggle-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = btn || document.getElementById(`focusBtn-${focus}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      const label = document.getElementById('focusActiveText');
+      if (label) label.innerHTML = `<strong>${focus.toUpperCase()} FOCUS ACTIVE</strong> — ${focusDescriptions[focus]}`;
+      loadWorkoutDay();
+    }
+
+    function restoreTrainingFocus() {
+      if (!focusRoutines[currentTrainingFocus]) currentTrainingFocus = 'shoulders';
+      setTrainingFocus(currentTrainingFocus, document.getElementById(`focusBtn-${currentTrainingFocus}`));
     }
 
     function getPreviousExerciseSet(exName, setNum) {
-      const history = JSON.parse(localStorage.getItem('schmokefit_bm_history') || '[]');
+      const history = JSON.parse(localStorage.getItem('schmokefit_history') || '[]');
       for (let log of history) {
         if (log.type === 'WORKOUT' && log.structuredData && log.structuredData[exName]) {
           const setData = log.structuredData[exName][`set${setNum}`];
@@ -1936,34 +1987,16 @@
     }
 
     function loadWorkoutDay() {
-      const daySelect = document.getElementById('workoutDaySelect');
-      if (!daySelect) return;
-
-      const selectedDay = daySelect.value || 'monday';
-
-      if (!focusRoutines[currentTrainingFocus]) {
-        currentTrainingFocus = 'tone';
-        localStorage.setItem('schmokefit_bm_training_focus', 'tone');
-      }
-
-      const routineSet = focusRoutines[currentTrainingFocus] || focusRoutines.tone;
-      const selectedRoutine = routineSet[selectedDay] || focusRoutines.tone[selectedDay] || [];
-
-      activeExercises = JSON.parse(JSON.stringify(selectedRoutine));
+      const selectedDay = document.getElementById('workoutDaySelect').value;
+      const routineSet = focusRoutines[currentTrainingFocus] || focusRoutines.shoulders;
+      activeExercises = JSON.parse(JSON.stringify(routineSet[selectedDay]));
       resetTimerPosition();
       renderWorkoutExercises();
     }
 
     function renderWorkoutExercises() {
       const container = document.getElementById('exerciseContainer');
-      if (!container) return;
-
       container.innerHTML = '';
-
-      if (!Array.isArray(activeExercises) || activeExercises.length === 0) {
-        container.innerHTML = '<div class="card" style="text-align:center;color:var(--text-muted);font-size:.72rem;">No workout loaded. Select a training style or workout day to reload the session.</div>';
-        return;
-      }
 
       activeExercises.forEach((ex, idx) => {
         const prev1 = getPreviousExerciseSet(ex.name, 1);
@@ -2185,7 +2218,7 @@
     }
 
     function restoreSavedBodyWeight() {
-      const savedWeight = localStorage.getItem('schmokefit_bm_bodyweight');
+      const savedWeight = localStorage.getItem('schmokefit_bodyweight');
       const input = document.getElementById('bodyWeightInput');
       if (savedWeight && input) {
         input.value = savedWeight;
@@ -2196,9 +2229,9 @@
       const bwInput = document.getElementById('bodyWeightInput');
       const bw = parseFloat(bwInput.value);
       if (!isNaN(bw) && bw > 0) {
-        localStorage.setItem('schmokefit_bm_bodyweight', bwInput.value);
+        localStorage.setItem('schmokefit_bodyweight', bwInput.value);
         const calories = Math.round(bw * currentMacroMultiplier);
-        const protein = Math.round(bw * 0.8);
+        const protein = Math.round(bw * 0.82);
         document.getElementById('calorieTargetVal').innerText = calories.toLocaleString() + ' kcal';
         document.getElementById('proteinTargetVal').innerText = protein + ' g';
         updateNutritionDashboard();
@@ -2230,7 +2263,7 @@
         };
       });
 
-      const history = JSON.parse(localStorage.getItem('schmokefit_bm_history') || '[]');
+      const history = JSON.parse(localStorage.getItem('schmokefit_history') || '[]');
       history.unshift({ 
         date: dateStr, 
         type: 'WORKOUT', 
@@ -2238,7 +2271,7 @@
         details: summary,
         structuredData: structuredData 
       });
-      localStorage.setItem('schmokefit_bm_history', JSON.stringify(history));
+      localStorage.setItem('schmokefit_history', JSON.stringify(history));
 
       weeklyWorkoutCount++;
       if (weeklyWorkoutCount >= 3) {
@@ -2247,7 +2280,7 @@
         if (currentWeek >= 18) {
           updateWeekTrackerDisplay();
           markProgramResetPending();
-          alert('Workout saved! 🎉 You completed Week 18 and finished this Bahama Mama training block.');
+          alert('Workout saved! 🎉 You completed Week 18 and finished this training block.');
           openProgramResetPrompt();
           return;
         }
@@ -2271,11 +2304,11 @@
     }
 
     function nutritionDateKey(dateStamp = localDateStamp(new Date())) {
-      return `schmokefit_bm_nutrition_${dateStamp}`;
+      return `schmokefit_nutrition_${dateStamp}`;
     }
 
     function nutritionMetaKey(dateStamp = localDateStamp(new Date())) {
-      return `schmokefit_bm_nutrition_meta_${dateStamp}`;
+      return `schmokefit_nutrition_meta_${dateStamp}`;
     }
 
     function getNutritionLogForDate(dateStamp) {
@@ -2319,7 +2352,7 @@
       const bw = parseFloat(document.getElementById('bodyWeightInput')?.value || '0');
       return {
         calories: bw > 0 ? Math.round(bw * currentMacroMultiplier) : 0,
-        protein: bw > 0 ? Math.round(bw * 0.8) : 0
+        protein: bw > 0 ? Math.round(bw * 0.82) : 0
       };
     }
 
@@ -2396,7 +2429,7 @@
 
     function getSavedBarcodeFoods() {
       try {
-        return JSON.parse(localStorage.getItem('schmokefit_bm_barcode_foods') || '{}') || {};
+        return JSON.parse(localStorage.getItem('schmokefit_barcode_foods') || '{}') || {};
       } catch (e) {
         return {};
       }
@@ -2407,7 +2440,7 @@
       if (!cleanCode) return;
       const saved = getSavedBarcodeFoods();
       saved[cleanCode] = food;
-      localStorage.setItem('schmokefit_bm_barcode_foods', JSON.stringify(saved));
+      localStorage.setItem('schmokefit_barcode_foods', JSON.stringify(saved));
     }
 
     async function startBarcodeScanner() {
@@ -2967,7 +3000,7 @@
 
       const goals = getNutritionGoalsForDate(dateStamp);
       const summary = `Logged: ${Math.round(totals.calories)} / ${goals.calories} kcal | ${round1(totals.protein)} / ${goals.protein}g Protein | ${round1(totals.carbs)}g Carbs | ${round1(totals.fat)}g Fat`;
-      const history = JSON.parse(localStorage.getItem('schmokefit_bm_history') || '[]');
+      const history = JSON.parse(localStorage.getItem('schmokefit_history') || '[]');
       const entryId = `nutrition-${dateStamp}`;
       const existingIndex = history.findIndex(item => item.entryId === entryId);
 
@@ -2993,8 +3026,8 @@
         history.unshift(entry);
       }
 
-      localStorage.setItem('schmokefit_bm_history', JSON.stringify(history));
-      localStorage.setItem(`schmokefit_bm_nutrition_archived_${dateStamp}`, 'true');
+      localStorage.setItem('schmokefit_history', JSON.stringify(history));
+      localStorage.setItem(`schmokefit_nutrition_archived_${dateStamp}`, 'true');
 
       if (showAlert) alert('Today\'s nutrition summary was saved to History!');
       return true;
@@ -3006,13 +3039,13 @@
 
     function autoArchivePastNutritionDays() {
       const todayStamp = localDateStamp(new Date());
-      const prefix = 'schmokefit_bm_nutrition_';
+      const prefix = 'schmokefit_nutrition_';
       const datePattern = /^\d{4}-\d{2}-\d{2}$/;
       const dates = [];
 
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (!key || !key.startsWith(prefix) || key.startsWith('schmokefit_bm_nutrition_meta_') || key.startsWith('schmokefit_bm_nutrition_archived_')) continue;
+        if (!key || !key.startsWith(prefix) || key.startsWith('schmokefit_nutrition_meta_') || key.startsWith('schmokefit_nutrition_archived_')) continue;
         const dateStamp = key.slice(prefix.length);
         if (datePattern.test(dateStamp) && dateStamp < todayStamp) dates.push(dateStamp);
       }
@@ -3124,16 +3157,16 @@
       }
 
       const summary = `Logged: ${cal || 0} kcal | ${pro || 0}g Protein`;
-      const history = JSON.parse(localStorage.getItem('schmokefit_bm_history') || '[]');
+      const history = JSON.parse(localStorage.getItem('schmokefit_history') || '[]');
       history.unshift({ date: dateStr, type: 'MACROS', title: 'Daily Macro Log', details: summary });
-      localStorage.setItem('schmokefit_bm_history', JSON.stringify(history));
+      localStorage.setItem('schmokefit_history', JSON.stringify(history));
 
       alert('Macro log saved to History!');
     }
 
     function renderHistory() {
       const container = document.getElementById('historyLogsContainer');
-      const history = JSON.parse(localStorage.getItem('schmokefit_bm_history') || '[]');
+      const history = JSON.parse(localStorage.getItem('schmokefit_history') || '[]');
 
       if (history.length === 0) {
         container.innerHTML = '<div class="empty-history">No logged workouts or macros found.</div>';
@@ -3157,7 +3190,7 @@
 
     function clearHistory() {
       if (confirm("Are you sure you want to clear all history?")) {
-        localStorage.removeItem('schmokefit_bm_history');
+        localStorage.removeItem('schmokefit_history');
         renderHistory();
         resetTimerPosition();
         renderWorkoutExercises();
@@ -3180,8 +3213,8 @@
       // If the app remains open overnight, this detects the new date and archives the prior day.
       setInterval(checkNutritionDateRollover, 60000);
 
-      const storedUser = localStorage.getItem('schmokefit_bm_user');
-      if (sessionStorage.getItem('schmokefit_bm_authenticated') === 'true' && storedUser) {
+      const storedUser = localStorage.getItem('schmokefit_user');
+      if (sessionStorage.getItem('schmokefit_authenticated') === 'true' && storedUser) {
         unlockApp(storedUser);
       } else {
         initAuthScreen();
