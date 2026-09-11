@@ -1126,6 +1126,82 @@
     }
 
 
+
+    /* NUTRITION DATE NAVIGATION */
+    .nutrition-date-picker {
+      display:grid;
+      grid-template-columns:42px minmax(0,1fr) 42px 58px;
+      gap:6px;
+      align-items:stretch;
+      margin:10px 0 5px;
+    }
+    .nutrition-date-arrow,
+    .nutrition-today-btn {
+      border:1px solid #334155;
+      background:#0b1220;
+      color:#e2e8f0;
+      border-radius:8px;
+      font-weight:900;
+      cursor:pointer;
+      min-height:42px;
+    }
+    .nutrition-date-arrow {
+      font-size:1rem;
+    }
+    .nutrition-date-arrow:disabled {
+      opacity:.32;
+      cursor:not-allowed;
+    }
+    .nutrition-today-btn {
+      font-size:.54rem;
+      letter-spacing:.4px;
+      color:var(--accent-blue);
+      border-color:rgba(0,170,255,.45);
+    }
+    .nutrition-today-btn.active {
+      background:rgba(0,170,255,.12);
+    }
+    .nutrition-date-center {
+      position:relative;
+      min-width:0;
+      border:1px solid #334155;
+      background:#0b1220;
+      border-radius:8px;
+      padding:5px 8px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+    .nutrition-date-label {
+      font-size:.68rem;
+      line-height:1.1;
+      font-weight:900;
+      color:#fff;
+      text-transform:uppercase;
+      letter-spacing:.25px;
+      pointer-events:none;
+    }
+    .nutrition-date-input {
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      opacity:0;
+      cursor:pointer;
+    }
+    .nutrition-date-note {
+      font-size:.57rem;
+      line-height:1.35;
+      color:#94a3b8;
+      margin-bottom:10px;
+      text-align:center;
+    }
+    .nutrition-date-note.past {
+      color:#fbbf24;
+    }
+
+
     /* EDIT LOGGED FOOD */
     .food-edit-overlay {
       display:none;
@@ -1399,6 +1475,19 @@
 
       <div class="card">
         <div style="font-size:0.75rem; font-weight:800; color:var(--accent-blue); margin-bottom:4px;">DAILY NUTRITION TRACKER</div>
+
+        <div class="nutrition-date-picker">
+          <button class="nutrition-date-arrow" type="button" onclick="changeNutritionDate(-1)" aria-label="Previous day">←</button>
+          <div class="nutrition-date-center">
+            <div class="nutrition-date-label" id="nutritionSelectedDateLabel">TODAY</div>
+            <input type="date" id="nutritionDateInput" class="nutrition-date-input" onchange="selectNutritionDate(this.value)">
+          </div>
+          <button class="nutrition-date-arrow" id="nutritionNextDayBtn" type="button" onclick="changeNutritionDate(1)" aria-label="Next day">→</button>
+          <button class="nutrition-today-btn" id="nutritionTodayBtn" type="button" onclick="goToTodayNutrition()">TODAY</button>
+        </div>
+
+        <div class="nutrition-date-note" id="nutritionDateNote">Logging food for today.</div>
+
         <div class="nutrition-summary-grid">
           <div class="nutrition-stat"><div class="nutrition-stat-value" id="nutritionCalories">0 / 2,340</div><div class="nutrition-stat-label">Calories</div></div>
           <div class="nutrition-stat"><div class="nutrition-stat-value" id="nutritionProtein">0 / 148g</div><div class="nutrition-stat-label">Protein</div></div>
@@ -1488,7 +1577,7 @@
           <div class="nutrition-note">Search uses USDA FoodData Central. Barcode scans use Open Food Facts. If a barcode is not found, you can enter the food manually and save that barcode on this device for future scans.</div>
         </div>
 
-        <button class="btn btn-blue" onclick="saveDailyNutritionSummary()">SAVE TODAY TO HISTORY</button>
+        <button class="btn btn-blue" id="saveNutritionHistoryBtn" onclick="saveDailyNutritionSummary()">SAVE TODAY TO HISTORY</button>
       </div>
     </div>
 
@@ -1622,6 +1711,7 @@
     let editingFoodMeal = null;
     let editingFoodIndex = null;
     let nutritionActiveDateStamp = localDateStamp(new Date());
+    let selectedNutritionDateStamp = nutritionActiveDateStamp;
 
     // INITIAL MASTER PASSWORD LOGIC
     function handleMasterSubmit() {
@@ -2376,6 +2466,87 @@
       return `${yyyy}-${mm}-${dd}`;
     }
 
+    function dateFromLocalStamp(dateStamp) {
+      const [y, m, d] = String(dateStamp || '').split('-').map(Number);
+      return new Date(y, (m || 1) - 1, d || 1);
+    }
+
+    function addDaysToStamp(dateStamp, amount) {
+      const date = dateFromLocalStamp(dateStamp);
+      date.setDate(date.getDate() + amount);
+      return localDateStamp(date);
+    }
+
+    function selectNutritionDate(dateStamp) {
+      const todayStamp = localDateStamp(new Date());
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(dateStamp || ''))) return;
+
+      // Nutrition can be edited for today or any past day, never a future date.
+      selectedNutritionDateStamp = dateStamp > todayStamp ? todayStamp : dateStamp;
+      updateNutritionDashboard();
+    }
+
+    function changeNutritionDate(delta) {
+      const todayStamp = localDateStamp(new Date());
+      const candidate = addDaysToStamp(selectedNutritionDateStamp, delta);
+      selectedNutritionDateStamp = candidate > todayStamp ? todayStamp : candidate;
+      updateNutritionDashboard();
+    }
+
+    function goToTodayNutrition() {
+      selectedNutritionDateStamp = localDateStamp(new Date());
+      updateNutritionDashboard();
+    }
+
+    function updateNutritionDateControls() {
+      const todayStamp = localDateStamp(new Date());
+      if (!selectedNutritionDateStamp || selectedNutritionDateStamp > todayStamp) {
+        selectedNutritionDateStamp = todayStamp;
+      }
+
+      const selectedDate = dateFromLocalStamp(selectedNutritionDateStamp);
+      const isToday = selectedNutritionDateStamp === todayStamp;
+      const isYesterday = selectedNutritionDateStamp === addDaysToStamp(todayStamp, -1);
+
+      const dateInput = document.getElementById('nutritionDateInput');
+      if (dateInput) {
+        dateInput.value = selectedNutritionDateStamp;
+        dateInput.max = todayStamp;
+      }
+
+      const label = document.getElementById('nutritionSelectedDateLabel');
+      if (label) {
+        if (isToday) {
+          label.innerText = 'TODAY';
+        } else if (isYesterday) {
+          label.innerText = 'YESTERDAY';
+        } else {
+          label.innerText = selectedDate.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric'
+          });
+        }
+      }
+
+      const note = document.getElementById('nutritionDateNote');
+      if (note) {
+        note.classList.toggle('past', !isToday);
+        note.innerText = isToday
+          ? 'Logging food for today.'
+          : `Editing ${selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}. Changes update Nutrition History automatically.`;
+      }
+
+      const nextBtn = document.getElementById('nutritionNextDayBtn');
+      if (nextBtn) nextBtn.disabled = isToday;
+
+      const todayBtn = document.getElementById('nutritionTodayBtn');
+      if (todayBtn) todayBtn.classList.toggle('active', isToday);
+
+      const saveBtn = document.getElementById('saveNutritionHistoryBtn');
+      if (saveBtn) saveBtn.innerText = isToday ? 'SAVE TODAY TO HISTORY' : 'SAVE THIS DAY TO HISTORY';
+    }
+
     function nutritionDateKey(dateStamp = localDateStamp(new Date())) {
       return `schmokefit_nutrition_${dateStamp}`;
     }
@@ -2395,18 +2566,36 @@
     }
 
     function getNutritionLog() {
-      return getNutritionLogForDate(localDateStamp(new Date()));
+      return getNutritionLogForDate(selectedNutritionDateStamp);
     }
 
     function saveNutritionLog(log) {
-      const todayStamp = localDateStamp(new Date());
-      localStorage.setItem(nutritionDateKey(todayStamp), JSON.stringify(log));
+      const targetStamp = selectedNutritionDateStamp || localDateStamp(new Date());
+      localStorage.setItem(nutritionDateKey(targetStamp), JSON.stringify(log));
 
-      // Preserve the target settings used on this day for future history displays.
-      localStorage.setItem(nutritionMetaKey(todayStamp), JSON.stringify({
-        goals: getNutritionGoals(),
+      // Keep historical goals stable when editing an older day.
+      let goalsForDay = getNutritionGoals();
+      try {
+        const existingMeta = JSON.parse(localStorage.getItem(nutritionMetaKey(targetStamp)) || 'null');
+        if (existingMeta?.goals && (Number(existingMeta.goals.calories) > 0 || Number(existingMeta.goals.protein) > 0)) {
+          goalsForDay = existingMeta.goals;
+        }
+      } catch (e) {}
+
+      localStorage.setItem(nutritionMetaKey(targetStamp), JSON.stringify({
+        goals: goalsForDay,
         savedAt: new Date().toISOString()
       }));
+
+      // If an older day is edited, immediately refresh its saved History summary.
+      if (targetStamp < localDateStamp(new Date())) {
+        upsertNutritionHistoryEntry(targetStamp, false);
+      }
+
+      // Keep the weekly graph in sync if it is currently mounted.
+      if (document.getElementById('calorieWeeklyChart')) {
+        renderNutritionHistoryWeek();
+      }
     }
 
     function nutritionTotalsFromLog(log) {
@@ -2435,8 +2624,9 @@
 
     function updateNutritionDashboard() {
       if (!document.getElementById('mealSections')) return;
+      updateNutritionDateControls();
       const totals = getNutritionTotals();
-      const goals = getNutritionGoals();
+      const goals = getNutritionGoalsForDate(selectedNutritionDateStamp);
       const rounded = n => Math.round((Number(n) || 0) * 10) / 10;
 
       document.getElementById('nutritionCalories').innerText = `${Math.round(totals.calories).toLocaleString()} / ${goals.calories.toLocaleString()}`;
@@ -3107,7 +3297,9 @@
     }
 
     function saveDailyNutritionSummary() {
-      upsertNutritionHistoryEntry(localDateStamp(new Date()), true);
+      const targetStamp = selectedNutritionDateStamp || localDateStamp(new Date());
+      upsertNutritionHistoryEntry(targetStamp, true);
+      renderNutritionHistoryWeek();
     }
 
     function autoArchivePastNutritionDays() {
@@ -3133,9 +3325,16 @@
       const todayStamp = localDateStamp(new Date());
 
       if (todayStamp !== nutritionActiveDateStamp) {
+        const wasViewingCurrentDay = selectedNutritionDateStamp === nutritionActiveDateStamp;
+
         // The app stayed open across midnight. Archive the day that just ended.
         upsertNutritionHistoryEntry(nutritionActiveDateStamp, false);
         nutritionActiveDateStamp = todayStamp;
+
+        // Follow the new day only when the user had been viewing the prior "today".
+        // If they were intentionally editing an older date, leave that date selected.
+        if (wasViewingCurrentDay) selectedNutritionDateStamp = todayStamp;
+
         updateNutritionDashboard();
       }
 
