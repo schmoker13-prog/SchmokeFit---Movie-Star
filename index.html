@@ -767,16 +767,22 @@
     .nutrition-stat-value { font-size:1.05rem; font-weight:900; color:#fff; }
     .nutrition-stat-label { font-size:.6rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
     .macro-progress-wrap { margin-top:10px; }
-    .macro-progress-row { display:flex; justify-content:space-between; gap:8px; font-size:.7rem; margin-bottom:4px; }
+    .macro-progress-row { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:.7rem; margin-bottom:4px; }
+    .macro-progress-label { font-weight:800; color:#fff; }
+    .macro-progress-numbers { text-align:right; font-size:.64rem; color:var(--text-muted); white-space:nowrap; }
+    .macro-progress-numbers strong { color:var(--accent-blue); font-weight:900; }
     .macro-progress-track { height:8px; border-radius:999px; background:#090d16; overflow:hidden; border:1px solid #1e293b; }
     .macro-progress-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--accent-blue),#34d399); transition:width .25s ease; }
     .meal-section { border-top:1px solid #1e293b; padding-top:10px; margin-top:10px; }
     .meal-header { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
     .meal-title { font-size:.72rem; font-weight:900; color:var(--accent-orange); letter-spacing:.5px; }
     .meal-add-btn { border:1px solid var(--accent-blue); background:transparent; color:var(--accent-blue); border-radius:6px; padding:5px 8px; font-size:.62rem; font-weight:800; cursor:pointer; }
-    .food-row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:8px; align-items:center; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.04); }
+    .food-row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:8px; align-items:center; padding:8px 5px; border-bottom:1px solid rgba(255,255,255,.04); border-radius:7px; cursor:pointer; transition:background .18s ease, border-color .18s ease; }
+    .food-row:hover, .food-row:active { background:rgba(0,170,255,.07); }
     .food-name { font-size:.72rem; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .food-macros { font-size:.62rem; color:var(--text-muted); }
+    .food-amount { font-size:.62rem; color:var(--accent-blue); font-weight:800; white-space:nowrap; }
+    .food-edit-hint { font-size:.52rem; color:#64748b; margin-top:2px; }
     .food-remove { border:none; background:transparent; color:var(--danger); cursor:pointer; font-size:.8rem; padding:4px; }
     .nutrition-search-panel { display:none; margin-top:10px; padding-top:10px; border-top:1px dashed var(--input-border); }
     .nutrition-search-panel.open { display:block; }
@@ -787,8 +793,13 @@
     .search-result-top { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
     .search-result-name { font-size:.72rem; font-weight:800; line-height:1.25; }
     .search-result-meta { font-size:.62rem; color:var(--text-muted); margin-top:3px; }
-    .search-result-controls { display:grid; grid-template-columns:90px 1fr; gap:6px; margin-top:7px; }
-    .search-result-controls input { width:100%; }
+    .search-result-controls { display:grid; grid-template-columns:78px 94px minmax(0,1fr); gap:6px; margin-top:7px; align-items:center; }
+    .search-result-controls input,
+    .search-result-controls select { width:100%; min-width:0; }
+    @media (max-width:390px) {
+      .search-result-controls { grid-template-columns:72px 88px minmax(0,1fr); gap:5px; }
+      .search-result-controls .btn { padding-left:7px !important; padding-right:7px !important; font-size:.58rem; }
+    }
     .nutrition-empty { font-size:.68rem; color:var(--text-muted); padding:6px 0; }
     .nutrition-note { font-size:.62rem; color:#64748b; margin-top:8px; line-height:1.35; }
 
@@ -1040,6 +1051,34 @@
       line-height:1.4;
       margin-top:8px;
     }
+
+
+    /* EDIT LOGGED FOOD */
+    .food-edit-overlay {
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:10010;
+      background:rgba(3,8,18,.86);
+      backdrop-filter:blur(5px);
+      -webkit-backdrop-filter:blur(5px);
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .food-edit-overlay.open { display:flex; }
+    .food-edit-card {
+      width:100%;
+      max-width:380px;
+      background:var(--card-bg);
+      border:1px solid var(--accent-blue);
+      border-radius:14px;
+      padding:16px;
+      box-shadow:0 18px 50px rgba(0,0,0,.55);
+    }
+    .food-edit-title { font-size:.9rem; font-weight:900; color:#fff; margin-bottom:3px; }
+    .food-edit-sub { font-size:.62rem; color:var(--text-muted); margin-bottom:12px; line-height:1.4; }
+    .food-edit-actions { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:10px; }
 
   </style>
     <!-- iPhone / iPad -->
@@ -1295,9 +1334,15 @@
         </div>
 
         <div class="macro-progress-wrap">
-          <div class="macro-progress-row"><span>Calories</span><span id="calorieRemainingText">2,340 remaining</span></div>
+          <div class="macro-progress-row">
+            <span class="macro-progress-label">Calories</span>
+            <span class="macro-progress-numbers"><strong id="calorieConsumedText">0 consumed</strong> • <span id="calorieRemainingText">2,340 remaining</span></span>
+          </div>
           <div class="macro-progress-track"><div class="macro-progress-fill" id="calorieProgressFill"></div></div>
-          <div class="macro-progress-row" style="margin-top:8px;"><span>Protein</span><span id="proteinRemainingText">148g remaining</span></div>
+          <div class="macro-progress-row" style="margin-top:8px;">
+            <span class="macro-progress-label">Protein</span>
+            <span class="macro-progress-numbers"><strong id="proteinConsumedText">0g consumed</strong> • <span id="proteinRemainingText">148g remaining</span></span>
+          </div>
           <div class="macro-progress-track"><div class="macro-progress-fill" id="proteinProgressFill"></div></div>
         </div>
 
@@ -1335,8 +1380,14 @@
                 <input id="manualFoodCalories" class="custom-select" type="number" min="0" step="1" placeholder="200">
               </div>
               <div>
-                <label for="manualFoodServing">Serving (g)</label>
-                <input id="manualFoodServing" class="custom-select" type="number" min="1" step="1" value="100">
+                <label for="manualFoodServing">Amount</label>
+                <div style="display:grid; grid-template-columns:1fr 88px; gap:5px;">
+                  <input id="manualFoodServing" class="custom-select" type="number" min="0.01" step="0.01" value="100">
+                  <select id="manualFoodUnit" class="custom-select">
+                    <option value="g">grams</option>
+                    <option value="oz">ounces</option>
+                  </select>
+                </div>
               </div>
               <div>
                 <label for="manualFoodProtein">Protein (g)</label>
@@ -1431,6 +1482,32 @@
   </div>
 
 
+  <!-- EDIT LOGGED FOOD -->
+  <div class="food-edit-overlay" id="foodEditOverlay" onclick="closeFoodEditIfBackdrop(event)">
+    <div class="food-edit-card">
+      <div class="food-edit-title" id="foodEditTitle">EDIT FOOD</div>
+      <div class="food-edit-sub" id="foodEditSummary">Update the amount you ate and the nutrition will recalculate automatically.</div>
+
+      <label class="select-label" for="foodEditAmount">AMOUNT</label>
+      <div style="display:grid; grid-template-columns:1fr 120px; gap:7px;">
+        <input type="number" min="0.01" step="0.01" id="foodEditAmount" class="custom-select" value="100">
+        <select id="foodEditUnit" class="custom-select" onchange="updateFoodEditPreview()">
+          <option value="g">grams</option>
+          <option value="oz">ounces</option>
+          <option value="serving">serving</option>
+        </select>
+      </div>
+
+      <div class="food-edit-sub" id="foodEditServingNote" style="margin-top:6px;"></div>
+      <div class="food-edit-sub" id="foodEditPreview" style="margin-top:8px;"></div>
+
+      <div class="food-edit-actions">
+        <button class="btn btn-dark" style="margin:0;" onclick="closeFoodEdit()">CANCEL</button>
+        <button class="btn btn-blue" style="margin:0;" onclick="saveFoodEdit()">UPDATE FOOD</button>
+      </div>
+    </div>
+  </div>
+
   <!-- END OF 18-WEEK PROGRAM RESET -->
   <div class="program-reset-overlay" id="programResetOverlay">
     <div class="program-reset-card">
@@ -1469,6 +1546,8 @@
     let barcodeScanLocked = false;
     let lastScannedBarcode = '';
     let nutritionHistoryWeekOffset = 0;
+    let editingFoodMeal = null;
+    let editingFoodIndex = null;
     let nutritionActiveDateStamp = localDateStamp(new Date());
 
     // INITIAL MASTER PASSWORD LOGIC
@@ -2294,6 +2373,8 @@
 
       const calRemain = Math.round(goals.calories - totals.calories);
       const proRemain = rounded(goals.protein - totals.protein);
+      document.getElementById('calorieConsumedText').innerText = `${Math.round(totals.calories).toLocaleString()} consumed`;
+      document.getElementById('proteinConsumedText').innerText = `${rounded(totals.protein)}g consumed`;
       document.getElementById('calorieRemainingText').innerText = calRemain >= 0 ? `${calRemain.toLocaleString()} remaining` : `${Math.abs(calRemain).toLocaleString()} over`;
       document.getElementById('proteinRemainingText').innerText = proRemain >= 0 ? `${proRemain}g remaining` : `${Math.abs(proRemain)}g over`;
 
@@ -2309,10 +2390,14 @@
       container.innerHTML = nutritionMeals.map(meal => {
         const items = log[meal] || [];
         const rows = items.length ? items.map((item, idx) => `
-          <div class="food-row">
-            <div><div class="food-name">${escapeHtml(item.name)}</div><div class="food-macros">${Math.round(item.calories)} kcal • ${round1(item.protein)}P • ${round1(item.carbs)}C • ${round1(item.fat)}F</div></div>
-            <div class="food-macros">${round1(item.grams)}g</div>
-            <button class="food-remove" onclick="removeFoodItem('${meal}', ${idx})" aria-label="Remove ${escapeHtml(item.name)}">✕</button>
+          <div class="food-row" onclick="openFoodEdit('${meal}', ${idx})" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openFoodEdit('${meal}', ${idx});}">
+            <div>
+              <div class="food-name">${escapeHtml(item.name)}</div>
+              <div class="food-macros">${Math.round(item.calories)} kcal • ${round1(item.protein)}P • ${round1(item.carbs)}C • ${round1(item.fat)}F</div>
+              <div class="food-edit-hint">Tap to edit amount</div>
+            </div>
+            <div class="food-amount">${formatLoggedFoodAmount(item)}</div>
+            <button class="food-remove" onclick="event.stopPropagation(); removeFoodItem('${meal}', ${idx})" aria-label="Remove ${escapeHtml(item.name)}">✕</button>
           </div>`).join('') : '<div class="nutrition-empty">No foods logged.</div>';
         return `<div class="meal-section"><div class="meal-header"><div class="meal-title">${meal.toUpperCase()}</div><button class="meal-add-btn" onclick="openFoodSearch('${meal}')">+ ADD</button></div>${rows}</div>`;
       }).join('');
@@ -2437,6 +2522,31 @@
       }
     }
 
+    const GRAMS_PER_OUNCE = 28.349523125;
+
+    function amountToGrams(amount, unit, servingGrams = 0) {
+      const qty = Math.max(0.01, Number(amount) || 0.01);
+      if (unit === 'oz') return qty * GRAMS_PER_OUNCE;
+      if (unit === 'serving' && Number(servingGrams) > 0) return qty * Number(servingGrams);
+      return qty;
+    }
+
+    function gramsToAmount(grams, unit, servingGrams = 0) {
+      const g = Math.max(0.01, Number(grams) || 0.01);
+      if (unit === 'oz') return g / GRAMS_PER_OUNCE;
+      if (unit === 'serving' && Number(servingGrams) > 0) return g / Number(servingGrams);
+      return g;
+    }
+
+    function normalizeUsdaServingGrams(food) {
+      const size = Number(food?.servingSize);
+      const unit = String(food?.servingSizeUnit || '').trim().toLowerCase();
+      if (!(size > 0)) return 0;
+      if (unit === 'g' || unit === 'gram' || unit === 'grams') return size;
+      if (unit === 'oz' || unit === 'ounce' || unit === 'ounces') return size * GRAMS_PER_OUNCE;
+      return 0;
+    }
+
     async function lookupBarcode(barcode) {
       const results = document.getElementById('foodSearchResults');
       const saved = getSavedBarcodeFoods();
@@ -2511,6 +2621,7 @@
         name: food.name,
         barcode,
         servingText: food.servingText || `${serving} g`,
+        servingGrams: serving,
         calories: numberOrZero(food.caloriesPer100),
         protein: numberOrZero(food.proteinPer100),
         carbs: numberOrZero(food.carbsPer100),
@@ -2526,7 +2637,12 @@
           </div>
         </div>
         <div class="search-result-controls">
-          <input type="number" min="1" step="1" value="${round1(serving)}" id="barcodeFoodGrams" class="custom-select" aria-label="Grams">
+          <input type="number" min="0.01" step="0.01" value="1" id="barcodeFoodAmount" class="custom-select" aria-label="Amount">
+          <select id="barcodeFoodUnit" class="custom-select" aria-label="Unit">
+            <option value="serving" selected>serving</option>
+            <option value="g">grams</option>
+            <option value="oz">ounces</option>
+          </select>
           <button class="btn btn-blue" style="margin-top:0;" onclick='addBarcodeFood(${payload})'>ADD TO ${activeNutritionMeal.toUpperCase()}</button>
         </div>
       </div>`;
@@ -2534,11 +2650,16 @@
 
     function addBarcodeFood(serializedFood) {
       const base = JSON.parse(serializedFood);
-      const grams = Math.max(1, Number(document.getElementById('barcodeFoodGrams')?.value) || 100);
+      const amount = Math.max(0.01, Number(document.getElementById('barcodeFoodAmount')?.value) || 1);
+      const unit = document.getElementById('barcodeFoodUnit')?.value || 'serving';
+      const servingGrams = Math.max(1, Number(base.servingGrams) || 100);
+      const grams = amountToGrams(amount, unit, servingGrams);
       const scale = grams / 100;
       const item = {
         name: base.name,
         grams,
+        servingGrams,
+        servingText: base.servingText || `${round1(servingGrams)} g`,
         calories: numberOrZero(base.calories) * scale,
         protein: numberOrZero(base.protein) * scale,
         carbs: numberOrZero(base.carbs) * scale,
@@ -2589,7 +2710,9 @@
       const protein = numberOrZero(document.getElementById('manualFoodProtein').value);
       const carbs = numberOrZero(document.getElementById('manualFoodCarbs').value);
       const fat = numberOrZero(document.getElementById('manualFoodFat').value);
-      const grams = Math.max(1, Number(document.getElementById('manualFoodServing').value) || 100);
+      const manualAmount = Math.max(0.01, Number(document.getElementById('manualFoodServing').value) || 100);
+      const manualUnit = document.getElementById('manualFoodUnit')?.value || 'g';
+      const grams = amountToGrams(manualAmount, manualUnit, 0);
       const barcode = document.getElementById('manualFoodBarcode').value.trim();
 
       if (!name) {
@@ -2629,6 +2752,8 @@
       document.getElementById('manualFoodFat').value = '';
       document.getElementById('manualFoodServing').value = '100';
       document.getElementById('manualFoodBarcode').value = '';
+      const unit = document.getElementById('manualFoodUnit');
+      if (unit) unit.value = 'g';
     }
 
     async function searchUsdaFoods() {
@@ -2654,11 +2779,39 @@
           const n = extractUsdaMacros(food.foodNutrients || []);
           const desc = food.description || food.lowercaseDescription || 'USDA Food';
           const brand = food.brandOwner || food.brandName || food.dataType || 'USDA';
+          const servingGrams = normalizeUsdaServingGrams(food);
+          const servingText = food.householdServingFullText || (servingGrams > 0 ? `${round1(servingGrams)} g serving` : '');
+          const defaultAmount = servingGrams > 0 ? 1 : 100;
+          const defaultUnit = servingGrams > 0 ? 'serving' : 'g';
+          const servingOption = servingGrams > 0
+            ? `<option value="serving" ${defaultUnit === 'serving' ? 'selected' : ''}>serving</option>`
+            : `<option value="serving" disabled>serving n/a</option>`;
+          const payload = JSON.stringify(JSON.stringify({
+            name: desc,
+            calories: n.calories,
+            protein: n.protein,
+            carbs: n.carbs,
+            fat: n.fat,
+            servingGrams,
+            servingText
+          }));
+
           return `<div class="search-result">
-            <div class="search-result-top"><div><div class="search-result-name">${escapeHtml(desc)}</div><div class="search-result-meta">${escapeHtml(brand)} • per 100g: ${Math.round(n.calories)} kcal • ${round1(n.protein)}P • ${round1(n.carbs)}C • ${round1(n.fat)}F</div></div></div>
+            <div class="search-result-top">
+              <div>
+                <div class="search-result-name">${escapeHtml(desc)}</div>
+                <div class="search-result-meta">${escapeHtml(brand)} • per 100g: ${Math.round(n.calories)} kcal • ${round1(n.protein)}P • ${round1(n.carbs)}C • ${round1(n.fat)}F</div>
+                ${servingGrams > 0 ? `<div class="search-result-meta">Serving: ${escapeHtml(servingText || `${round1(servingGrams)} g`)}</div>` : ''}
+              </div>
+            </div>
             <div class="search-result-controls">
-              <input type="number" min="1" step="1" value="100" id="foodGrams-${idx}" class="custom-select" aria-label="Grams">
-              <button class="btn btn-blue" style="margin-top:0;" onclick='addUsdaFood(${JSON.stringify(JSON.stringify({name:desc, calories:n.calories, protein:n.protein, carbs:n.carbs, fat:n.fat}))}, ${idx})'>ADD TO ${activeNutritionMeal.toUpperCase()}</button>
+              <input type="number" min="0.01" step="0.01" value="${defaultAmount}" id="foodAmount-${idx}" class="custom-select" aria-label="Amount">
+              <select id="foodUnit-${idx}" class="custom-select" aria-label="Unit">
+                ${servingOption}
+                <option value="g" ${defaultUnit === 'g' ? 'selected' : ''}>grams</option>
+                <option value="oz">ounces</option>
+              </select>
+              <button class="btn btn-blue" style="margin-top:0;" onclick='addUsdaFood(${payload}, ${idx})'>ADD TO ${activeNutritionMeal.toUpperCase()}</button>
             </div>
           </div>`;
         }).join('');
@@ -2683,11 +2836,16 @@
 
     function addUsdaFood(serializedFood, idx) {
       const base = JSON.parse(serializedFood);
-      const grams = Math.max(1, Number(document.getElementById(`foodGrams-${idx}`)?.value) || 100);
+      const amount = Math.max(0.01, Number(document.getElementById(`foodAmount-${idx}`)?.value) || 1);
+      const unit = document.getElementById(`foodUnit-${idx}`)?.value || 'g';
+      const servingGrams = Number(base.servingGrams) > 0 ? Number(base.servingGrams) : 0;
+      const grams = amountToGrams(amount, unit, servingGrams);
       const scale = grams / 100;
       const item = {
         name: base.name,
         grams,
+        servingGrams,
+        servingText: base.servingText || '',
         calories: base.calories * scale,
         protein: base.protein * scale,
         carbs: base.carbs * scale,
@@ -2698,6 +2856,118 @@
       saveNutritionLog(log);
       updateNutritionDashboard();
       closeFoodSearch();
+    }
+
+    function formatLoggedFoodAmount(item) {
+      const grams = Number(item?.grams) || 0;
+      const servingGrams = Number(item?.servingGrams) || 0;
+      if (servingGrams > 0) {
+        const servings = grams / servingGrams;
+        if (Math.abs(servings - Math.round(servings * 4) / 4) < 0.01) {
+          const label = Math.abs(servings - 1) < 0.01 ? 'serving' : 'servings';
+          return `${round1(servings)} ${label}`;
+        }
+      }
+      return `${round1(grams)}g`;
+    }
+
+    function openFoodEdit(meal, index) {
+      const log = getNutritionLog();
+      const item = log?.[meal]?.[index];
+      if (!item) return;
+
+      editingFoodMeal = meal;
+      editingFoodIndex = index;
+
+      document.getElementById('foodEditTitle').innerText = item.name || 'EDIT FOOD';
+
+      const servingGrams = Number(item.servingGrams) > 0 ? Number(item.servingGrams) : 0;
+      const unitSelect = document.getElementById('foodEditUnit');
+      const servingOption = unitSelect?.querySelector('option[value="serving"]');
+      if (servingOption) servingOption.disabled = !(servingGrams > 0);
+
+      let preferredUnit = 'g';
+      if (servingGrams > 0 && Math.abs((Number(item.grams) || 0) / servingGrams - Math.round((Number(item.grams) || 0) / servingGrams)) < 0.01) {
+        preferredUnit = 'serving';
+      }
+
+      if (unitSelect) unitSelect.value = preferredUnit;
+      const amountInput = document.getElementById('foodEditAmount');
+      if (amountInput) amountInput.value = round1(gramsToAmount(item.grams || 100, preferredUnit, servingGrams));
+
+      const servingNote = document.getElementById('foodEditServingNote');
+      if (servingNote) {
+        servingNote.innerText = servingGrams > 0
+          ? `1 serving = ${item.servingText || `${round1(servingGrams)} g`}`
+          : 'Serving size is not available for this food; use grams or ounces.';
+      }
+
+      updateFoodEditPreview();
+
+      const overlay = document.getElementById('foodEditOverlay');
+      if (overlay) overlay.classList.add('open');
+
+      if (amountInput) {
+        amountInput.oninput = updateFoodEditPreview;
+        setTimeout(() => amountInput.focus(), 50);
+      }
+    }
+
+    function updateFoodEditPreview() {
+      if (editingFoodMeal === null || editingFoodIndex === null) return;
+      const log = getNutritionLog();
+      const item = log?.[editingFoodMeal]?.[editingFoodIndex];
+      if (!item) return;
+
+      const oldGrams = Math.max(0.01, Number(item.grams) || 0.01);
+      const amount = Math.max(0.01, Number(document.getElementById('foodEditAmount')?.value) || 1);
+      const unit = document.getElementById('foodEditUnit')?.value || 'g';
+      const servingGrams = Number(item.servingGrams) > 0 ? Number(item.servingGrams) : 0;
+      const newGrams = amountToGrams(amount, unit, servingGrams);
+      const scale = newGrams / oldGrams;
+
+      const preview = document.getElementById('foodEditPreview');
+      if (preview) {
+        preview.innerText = `${Math.round((Number(item.calories) || 0) * scale)} kcal • ${round1((Number(item.protein) || 0) * scale)}g protein • ${round1((Number(item.carbs) || 0) * scale)}g carbs • ${round1((Number(item.fat) || 0) * scale)}g fat`;
+      }
+    }
+
+    function saveFoodEdit() {
+      if (editingFoodMeal === null || editingFoodIndex === null) return;
+
+      const log = getNutritionLog();
+      const item = log?.[editingFoodMeal]?.[editingFoodIndex];
+      if (!item) {
+        closeFoodEdit();
+        return;
+      }
+
+      const oldGrams = Math.max(0.01, Number(item.grams) || 0.01);
+      const amount = Math.max(0.01, Number(document.getElementById('foodEditAmount')?.value) || 1);
+      const unit = document.getElementById('foodEditUnit')?.value || 'g';
+      const servingGrams = Number(item.servingGrams) > 0 ? Number(item.servingGrams) : 0;
+      const newGrams = amountToGrams(amount, unit, servingGrams);
+      const scale = newGrams / oldGrams;
+
+      item.calories = (Number(item.calories) || 0) * scale;
+      item.protein = (Number(item.protein) || 0) * scale;
+      item.carbs = (Number(item.carbs) || 0) * scale;
+      item.fat = (Number(item.fat) || 0) * scale;
+      item.grams = newGrams;
+
+      saveNutritionLog(log);
+      updateNutritionDashboard();
+      closeFoodEdit();
+    }
+
+    function closeFoodEdit() {
+      document.getElementById('foodEditOverlay')?.classList.remove('open');
+      editingFoodMeal = null;
+      editingFoodIndex = null;
+    }
+
+    function closeFoodEditIfBackdrop(event) {
+      if (event.target?.id === 'foodEditOverlay') closeFoodEdit();
     }
 
     function removeFoodItem(meal, index) {
