@@ -1229,6 +1229,36 @@
     .food-edit-sub { font-size:.62rem; color:var(--text-muted); margin-bottom:12px; line-height:1.4; }
     .food-edit-actions { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:10px; }
 
+  
+    /* STICKY HEADER + NAVIGATION */
+    .header-card {
+      position: sticky !important;
+      top: 0;
+      z-index: 1100;
+      margin-bottom: 0 !important;
+      border-bottom-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .nav-tabs {
+      position: sticky !important;
+      top: 86px;
+      z-index: 1090;
+      margin-top: 0 !important;
+      background: #070b12;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      box-shadow: 0 8px 16px rgba(0,0,0,.28);
+    }
+
+    @media (max-width: 520px) {
+      .nav-tabs {
+        top: 82px;
+      }
+    }
+
   </style>
     <!-- iPhone / iPad -->
 <link rel="apple-touch-icon" href="schmokefit-icon.png">
@@ -2397,6 +2427,11 @@
         const protein = Math.round(bw * 0.82);
         document.getElementById('calorieTargetVal').innerText = calories.toLocaleString() + ' kcal';
         document.getElementById('proteinTargetVal').innerText = protein + ' g';
+        const todayStamp = localDateStamp(new Date());
+        localStorage.setItem(nutritionMetaKey(todayStamp), JSON.stringify({
+          goals: { calories, protein },
+          savedAt: new Date().toISOString()
+        }));
         updateNutritionDashboard();
       }
     }
@@ -3246,6 +3281,13 @@
     }
 
     function getNutritionGoalsForDate(dateStamp) {
+      const todayStamp = localDateStamp(new Date());
+
+      // Today's dashboard should always use the LIVE macro targets from the
+      // current bodyweight + selected phase. Historical dates keep the goals
+      // that were saved for that specific day.
+      if (dateStamp === todayStamp) return getNutritionGoals();
+
       try {
         const meta = JSON.parse(localStorage.getItem(nutritionMetaKey(dateStamp)) || 'null');
         if (meta?.goals) return meta.goals;
