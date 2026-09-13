@@ -2598,7 +2598,7 @@
             <div class="prev-val-box" title="Previous Session Weight × Reps">${prev1}</div>
             <div class="set-input-group">
               <input type="number" class="set-input ex-${idx}-w1" placeholder="Wt" oninput="autoCalcRPT(${idx})">
-              <input type="text" class="set-input ex-${idx}-r1" placeholder="Reps (4-6)" onchange="onRepsEntered(${idx})">
+              <input type="number" inputmode="numeric" pattern="[0-9]*" class="set-input ex-${idx}-r1" placeholder="Reps (4-6)" onchange="onRepsEntered(${idx})">
             </div>
           </div>
 
@@ -2608,7 +2608,7 @@
             <div class="prev-val-box" title="Previous Session Weight × Reps">${prev2}</div>
             <div class="set-input-group">
               <input type="number" class="set-input ex-${idx}-w2" placeholder="Wt">
-              <input type="text" class="set-input ex-${idx}-r2" placeholder="Reps (6-8)" onchange="onRepsEntered(${idx})">
+              <input type="number" inputmode="numeric" pattern="[0-9]*" class="set-input ex-${idx}-r2" placeholder="Reps (6-8)" onchange="onRepsEntered(${idx})">
             </div>
           </div>
 
@@ -2618,7 +2618,7 @@
             <div class="prev-val-box" title="Previous Session Weight × Reps">${prev3}</div>
             <div class="set-input-group">
               <input type="number" class="set-input ex-${idx}-w3" placeholder="Wt" oninput="checkExerciseCompletion(${idx})">
-              <input type="text" class="set-input ex-${idx}-r3" placeholder="Reps (8-10)" onchange="onRepsEntered(${idx})">
+              <input type="number" inputmode="numeric" pattern="[0-9]*" class="set-input ex-${idx}-r3" placeholder="Reps (8-10)" onchange="onRepsEntered(${idx})">
             </div>
           </div>
         `;
