@@ -1654,6 +1654,25 @@
   margin:0 !important;
 }
 
+
+/* IN-PROGRESS WORKOUT STATE */
+.weekly-workout-card.in-progress {
+  border-color: rgba(56,189,248,.50) !important;
+  background: linear-gradient(135deg, rgba(56,189,248,.10), rgba(11,18,24,1) 58%) !important;
+}
+.weekly-workout-card.in-progress .weekly-workout-status {
+  color: #38bdf8 !important;
+  background: rgba(56,189,248,.12) !important;
+}
+.extra-workout-card.in-progress {
+  border-color: rgba(56,189,248,.50) !important;
+  background: linear-gradient(135deg, rgba(56,189,248,.10), rgba(10,18,24,1) 58%) !important;
+}
+.extra-workout-card.in-progress .extra-workout-badge {
+  color:#38bdf8 !important;
+  background:rgba(56,189,248,.12) !important;
+}
+
 </style>
 <!-- iPhone / iPad -->
 <link href="schmokefit-icon.png" rel="apple-touch-icon"/>
@@ -5369,6 +5388,327 @@
       }
     });
 
-  </script>
+  
+    // ===== AUTOSAVED IN-PROGRESS WORKOUTS =====
+    const workoutDraftStorageKey = 'schmokefit_workout_drafts';
+    let editingExtraDraftId = null;
+
+    function getWorkoutDrafts() {
+      try {
+        return JSON.parse(localStorage.getItem(workoutDraftStorageKey) || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveWorkoutDrafts(drafts) {
+      localStorage.setItem(workoutDraftStorageKey, JSON.stringify(drafts || {}));
+    }
+
+    function programWorkoutDraftKey(cycle, week, day) {
+      return `program|${cycle}|${week}|${day}`;
+    }
+
+    function extraWorkoutDraftKey(cycle, week, draftId) {
+      return `extra|${cycle}|${week}|${draftId}`;
+    }
+
+    function currentWorkoutDraftKey() {
+      if (editingWorkoutDay) {
+        return programWorkoutDraftKey(currentWorkoutCycle, editingWorkoutWeek || currentWeek, editingWorkoutDay);
+      }
+      if (editingExtraWorkoutName && editingExtraDraftId) {
+        return extraWorkoutDraftKey(currentWorkoutCycle, editingWorkoutWeek || currentWeek, editingExtraDraftId);
+      }
+      return null;
+    }
+
+    function getProgramWorkoutDraft(week, day, cycle = currentWorkoutCycle) {
+      return getWorkoutDrafts()[programWorkoutDraftKey(cycle, week, day)] || null;
+    }
+
+    function draftSetData() {
+      const structuredData = {};
+      let hasAnyValue = false;
+
+      (activeExercises || []).forEach((ex, idx) => {
+        structuredData[ex.name] = {};
+        for (let n = 1; n <= 3; n++) {
+          const w = document.querySelector(`.ex-${idx}-w${n}`)?.value ?? '';
+          const r = document.querySelector(`.ex-${idx}-r${n}`)?.value ?? '';
+          if (String(w).trim() !== '' || String(r).trim() !== '') hasAnyValue = true;
+          structuredData[ex.name][`set${n}`] = { w, r };
+        }
+      });
+
+      return { structuredData, hasAnyValue };
+    }
+
+    function saveCurrentWorkoutDraft() {
+      const detail = document.getElementById('workoutDetailView');
+      if (!detail || detail.style.display === 'none') return;
+
+      // Do not create drafts for future previews or already-completed program workouts.
+      const week = Number(editingWorkoutWeek || currentWeek);
+      if (week > currentWeek) return;
+      if (editingWorkoutDay && editingWorkoutEntryId) return;
+      if (editingExtraWorkoutId) return;
+
+      const key = currentWorkoutDraftKey();
+      if (!key) return;
+
+      const { structuredData, hasAnyValue } = draftSetData();
+      if (!hasAnyValue && !(editingExtraWorkoutName && (activeExercises || []).length)) return;
+
+      const drafts = getWorkoutDrafts();
+      drafts[key] = {
+        kind: editingWorkoutDay ? 'PROGRAM' : 'EXTRA',
+        cycle: currentWorkoutCycle,
+        week,
+        day: editingWorkoutDay || null,
+        draftId: editingExtraDraftId || null,
+        customWorkoutName: editingExtraWorkoutName || null,
+        exerciseList: JSON.parse(JSON.stringify(activeExercises || [])),
+        structuredData,
+        updatedAt: new Date().toISOString()
+      };
+      saveWorkoutDrafts(drafts);
+    }
+
+    function deleteWorkoutDraft(key) {
+      if (!key) return;
+      const drafts = getWorkoutDrafts();
+      delete drafts[key];
+      saveWorkoutDrafts(drafts);
+    }
+
+    function restoreDraftFields(draft) {
+      if (!draft) return;
+      if (Array.isArray(draft.exerciseList) && draft.exerciseList.length) {
+        activeExercises = JSON.parse(JSON.stringify(draft.exerciseList));
+        renderWorkoutExercises();
+      }
+
+      (activeExercises || []).forEach((ex, idx) => {
+        const saved = draft.structuredData?.[ex.name];
+        if (!saved) return;
+        for (let n = 1; n <= 3; n++) {
+          const w = document.querySelector(`.ex-${idx}-w${n}`);
+          const r = document.querySelector(`.ex-${idx}-r${n}`);
+          const set = saved[`set${n}`];
+          if (w && set) w.value = set.w ?? '';
+          if (r && set) r.value = set.r ?? '';
+        }
+      });
+    }
+
+    function draftProgressSummary(draft) {
+      if (!draft?.structuredData) return 'Tap to resume workout';
+      let filled = 0;
+      let total = 0;
+      Object.values(draft.structuredData).forEach(ex => {
+        for (let n = 1; n <= 3; n++) {
+          total++;
+          const set = ex?.[`set${n}`];
+          if (set && String(set.w ?? '').trim() !== '' && String(set.r ?? '').trim() !== '') filled++;
+        }
+      });
+      return `${filled} of ${total} sets logged • Tap to resume`;
+    }
+
+    // Autosave whenever a weight or rep value changes.
+    document.addEventListener('input', (event) => {
+      if (event.target?.closest?.('#exerciseContainer') && event.target.classList.contains('set-input')) {
+        saveCurrentWorkoutDraft();
+      }
+    });
+
+    document.addEventListener('change', (event) => {
+      if (event.target?.closest?.('#exerciseContainer') && event.target.classList.contains('set-input')) {
+        saveCurrentWorkoutDraft();
+      }
+    });
+
+    // Restore a program draft after the normal workout loader has built the exercise inputs.
+    const openWorkoutDetailBeforeDrafts = openWorkoutDetail;
+    openWorkoutDetail = function(day) {
+      const existing = getWorkoutEntry(viewedWorkoutWeek, day, currentWorkoutCycle);
+      const draft = existing ? null : getProgramWorkoutDraft(viewedWorkoutWeek, day, currentWorkoutCycle);
+      openWorkoutDetailBeforeDrafts(day);
+      editingExtraDraftId = null;
+      if (draft) {
+        restoreDraftFields(draft);
+        const note = document.getElementById('workoutEditNote');
+        if (note) {
+          note.classList.remove('completed');
+          note.innerText = 'IN PROGRESS • Your previously entered weights and reps were restored automatically.';
+        }
+      }
+    };
+
+    // Give brand-new extra workouts a stable temporary draft ID.
+    const startExtraWorkoutBeforeDrafts = startExtraWorkout;
+    startExtraWorkout = function() {
+      startExtraWorkoutBeforeDrafts();
+      if (editingExtraWorkoutName && !editingExtraWorkoutId) {
+        editingExtraDraftId = `draft-${Date.now()}`;
+      }
+    };
+
+    function openExtraWorkoutDraft(draftKey) {
+      const draft = getWorkoutDrafts()[draftKey];
+      if (!draft) return;
+
+      workoutCompletionPromptShown = false;
+      editingExtraWorkoutId = null;
+      editingExtraDraftId = draft.draftId;
+      editingExtraWorkoutName = draft.customWorkoutName || 'Extra Workout';
+      editingWorkoutWeek = Number(draft.week);
+      editingWorkoutDay = null;
+      editingWorkoutEntryId = null;
+      activeExercises = JSON.parse(JSON.stringify(draft.exerciseList || []));
+
+      const dashboard = document.getElementById('workoutDashboardView');
+      const detail = document.getElementById('workoutDetailView');
+      if (dashboard) dashboard.style.display = 'none';
+      if (detail) detail.style.display = 'block';
+
+      const title = document.getElementById('workoutDetailTitle');
+      const subtitle = document.getElementById('workoutDetailSubtitle');
+      const note = document.getElementById('workoutEditNote');
+      const saveBtn = document.getElementById('saveWorkoutButton');
+
+      if (title) title.innerText = editingExtraWorkoutName;
+      if (subtitle) subtitle.innerText = `Cycle ${currentWorkoutCycle} • Week ${editingWorkoutWeek} • Extra Workout`;
+      if (note) {
+        note.classList.remove('completed');
+        note.innerText = 'IN PROGRESS • Your previously entered workout data was restored automatically.';
+      }
+      if (saveBtn) {
+        saveBtn.innerText = '✓ SAVE EXTRA WORKOUT';
+        saveBtn.disabled = false;
+        saveBtn.style.opacity = '1';
+      }
+
+      resetTimerPosition();
+      renderWorkoutExercises();
+      restoreDraftFields(draft);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Add IN PROGRESS state to the 3 program cards and show extra-workout drafts.
+    const renderWorkoutDashboardBeforeDrafts = renderWorkoutDashboard;
+    renderWorkoutDashboard = function() {
+      renderWorkoutDashboardBeforeDrafts();
+
+      ['monday','wednesday','friday'].forEach(day => {
+        const entry = getWorkoutEntry(viewedWorkoutWeek, day, currentWorkoutCycle);
+        if (entry) return;
+
+        const draft = getProgramWorkoutDraft(viewedWorkoutWeek, day, currentWorkoutCycle);
+        const card = document.getElementById(`workoutCard-${day}`);
+        const status = document.getElementById(`workoutStatus-${day}`);
+        const meta = document.getElementById(`workoutMeta-${day}`);
+        if (!card) return;
+
+        card.classList.toggle('in-progress', !!draft);
+        if (draft && status && meta) {
+          status.innerText = 'IN PROGRESS';
+          meta.innerText = draftProgressSummary(draft);
+        }
+      });
+
+      const list = document.getElementById('extraWorkoutList');
+      if (!list) return;
+
+      const drafts = getWorkoutDrafts();
+      Object.entries(drafts)
+        .filter(([key, d]) =>
+          d?.kind === 'EXTRA' &&
+          Number(d.cycle) === Number(currentWorkoutCycle) &&
+          Number(d.week) === Number(viewedWorkoutWeek)
+        )
+        .forEach(([key, draft]) => {
+          const card = document.createElement('button');
+          card.className = 'extra-workout-card in-progress';
+          card.type = 'button';
+          card.onclick = () => openExtraWorkoutDraft(key);
+          const exerciseCount = Array.isArray(draft.exerciseList) ? draft.exerciseList.length : 0;
+          card.innerHTML = `
+            <div class="extra-title">${escapeHtml(draft.customWorkoutName || 'Extra Workout')}</div>
+            <div class="extra-workout-badge">IN PROGRESS</div>
+            <div class="extra-meta">${draftProgressSummary(draft)} • ${exerciseCount} exercise${exerciseCount === 1 ? '' : 's'}</div>
+          `;
+          list.appendChild(card);
+        });
+    };
+
+    // Preserve exercise-list changes in a draft too.
+    const changeExerciseSubstitutionBeforeDrafts = changeExerciseSubstitution;
+    changeExerciseSubstitution = function(index, newName) {
+      saveCurrentWorkoutDraft();
+      changeExerciseSubstitutionBeforeDrafts(index, newName);
+      saveCurrentWorkoutDraft();
+    };
+
+    const addNewExerciseBeforeDrafts = addNewExercise;
+    addNewExercise = function() {
+      addNewExerciseBeforeDrafts();
+      saveCurrentWorkoutDraft();
+    };
+
+    const removeExerciseBeforeDrafts = removeExercise;
+    removeExercise = function(index) {
+      saveCurrentWorkoutDraft();
+      removeExerciseBeforeDrafts(index);
+      saveCurrentWorkoutDraft();
+    };
+
+    // Leaving the workout for another main tab saves the draft, stops the timer,
+    // and returns the Workout tab to its dashboard so the user sees IN PROGRESS.
+    const switchTabBeforeDrafts = switchTab;
+    switchTab = function(tabId, btn) {
+      const detail = document.getElementById('workoutDetailView');
+      const wasInWorkoutDetail = detail && detail.style.display !== 'none';
+
+      if (wasInWorkoutDetail) {
+        saveCurrentWorkoutDraft();
+        stopAndResetRestTimer();
+
+        const dashboard = document.getElementById('workoutDashboardView');
+        if (dashboard) dashboard.style.display = 'block';
+        if (detail) detail.style.display = 'none';
+
+        editingWorkoutWeek = null;
+        editingWorkoutDay = null;
+        editingWorkoutEntryId = null;
+        editingExtraWorkoutId = null;
+        editingExtraWorkoutName = '';
+        editingExtraDraftId = null;
+      }
+
+      switchTabBeforeDrafts(tabId, btn);
+
+      if (tabId === 'workoutTab') {
+        renderWorkoutDashboard();
+      }
+    };
+
+    // When a workout is actually logged, remove its draft.
+    const saveWorkoutLogBeforeDraftCleanup = saveWorkoutLog;
+    saveWorkoutLog = function() {
+      const draftKey = currentWorkoutDraftKey();
+      saveWorkoutLogBeforeDraftCleanup();
+      deleteWorkoutDraft(draftKey);
+      editingExtraDraftId = null;
+      renderWorkoutDashboard();
+    };
+
+    // Also save before the browser/page is closed or refreshed.
+    window.addEventListener('beforeunload', () => {
+      saveCurrentWorkoutDraft();
+    });
+
+</script>
 </body>
 </html>
