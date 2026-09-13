@@ -1733,6 +1733,60 @@
   margin: 0;
 }
 
+
+/* ===== SCHMOKEFIT GUIDED APP TOUR ===== */
+.app-tour-overlay {
+  position: fixed; inset: 0; z-index: 5000; display: none;
+  background: rgba(2,6,12,.78);
+}
+.app-tour-overlay.active { display: block; }
+.app-tour-spotlight {
+  position: fixed; z-index: 5002; pointer-events: none;
+  border: 2px solid #38bdf8; border-radius: 10px;
+  box-shadow: 0 0 0 5px rgba(56,189,248,.16), 0 0 28px rgba(56,189,248,.35);
+  transition: all .22s ease;
+}
+.app-tour-card {
+  position: fixed; z-index: 5003; width: min(360px, calc(100vw - 28px));
+  background: #0b1218; border: 1px solid #263846; border-radius: 16px;
+  padding: 16px; box-shadow: 0 20px 50px rgba(0,0,0,.55);
+}
+.app-tour-step { font-size:.66rem; font-weight:900; letter-spacing:.08em; color:#38bdf8; margin-bottom:5px; }
+.app-tour-title { font-size:1rem; font-weight:900; color:#f8fafc; margin-bottom:7px; }
+.app-tour-copy { font-size:.76rem; line-height:1.5; color:#cbd5e1; margin-bottom:14px; }
+.app-tour-actions { display:flex; gap:7px; align-items:center; }
+.app-tour-actions button { min-height:38px; }
+.app-tour-skip {
+  border:0; background:transparent; color:#94a3b8; font-weight:800;
+  font-size:.68rem; padding:8px 4px; cursor:pointer; margin-right:auto;
+}
+.app-tour-secondary {
+  border:1px solid #334155; background:#111a23; color:#e2e8f0;
+  border-radius:9px; padding:8px 12px; font-weight:900; font-size:.68rem; cursor:pointer;
+}
+.app-tour-next {
+  border:0; background:#38bdf8; color:#061018; border-radius:9px;
+  padding:9px 13px; font-weight:900; font-size:.68rem; cursor:pointer;
+}
+.app-tour-replay-small {
+  display:inline-block;
+  width:auto;
+  min-height:30px;
+  padding:6px 11px;
+  border:1px solid #334155;
+  border-radius:8px;
+  background:transparent;
+  color:#94a3b8;
+  font-size:.60rem;
+  font-weight:900;
+  letter-spacing:.03em;
+  cursor:pointer;
+}
+@media (max-width:520px) {
+  .app-tour-card { padding:14px; }
+  .app-tour-copy { font-size:.73rem; }
+}
+
 </style>
 <!-- iPhone / iPad -->
 <link href="schmokefit-icon.png" rel="apple-touch-icon"/>
@@ -1812,6 +1866,9 @@
 <li><strong>Set 3 (Light):</strong> Drop weight another ~10–20%, target 8–10 reps.</li>
 <li><strong>Rest Period:</strong> Rest 2.5 to 3 minutes between all sets.</li>
 </ul>
+<p style="margin-bottom:6px;"><strong>PROGRESSIVE OVERLOAD:</strong> Reverse pyramid training gives the workout structure; progressive overload is what keeps it moving forward. Aim to improve either <strong>weight or reps every 1–2 weeks</strong>.</p>
+<p style="margin-bottom:8px;">When you can complete your <strong>heavy first set at the top of its prescribed rep range</strong> with solid form, increase the weight slightly the next time you perform that lift. Your reps may drop at first—that is normal. Build them back up, then increase the load again.</p>
+<p style="font-size:.72rem; color:var(--text-muted); margin-bottom:8px;"><strong>THE GOAL:</strong> Small, repeatable improvements over time. You do not need a huge jump every workout—just keep giving your body a reason to adapt.</p>
 <p>⏱️ <strong>TIME CRUNCH RULE:</strong> If time is short, perform only the Key Lifts for that day and skip supplemental work.</p>
 </div>
 <!-- TRAINING FOCUS OPTIONS -->
@@ -1835,13 +1892,16 @@
 <!-- NUTRITION BLUEPRINT -->
 <div class="card info-card">
 <div class="info-subtitle">03. NO-BS NUTRITION BLUEPRINT</div>
-<p style="margin-bottom: 8px;">Hitting your physique goals comes down to tracking two core metrics: <strong>Calories</strong> and <strong>Protein</strong>.</p>
-<p style="margin-bottom: 4px;">• <strong>Daily Calorie Target (Deficit):</strong> Bodyweight (lbs) × 13</p>
-<p style="margin-bottom: 8px;">• <strong>Daily Protein Target:</strong> Bodyweight (lbs) × 0.82g</p>
-<p style="font-size:0.72rem; color:#64748b; margin-bottom:10px;">*Note: Use your target bodyweight if you have significant weight to lose.</p>
+<p style="margin-bottom:8px;">When the goal is to <strong>get lean while building or preserving muscle</strong>, keep the nutrition plan simple: create a modest calorie deficit while consistently eating enough protein to support training and recovery.</p>
+<p style="margin-bottom:8px;">These bodyweight-based calculations give you an easy starting point. The same approach can also be adjusted when your goal changes from fat loss to maintaining your weight or moving into a slight calorie surplus.</p>
+<p style="margin-bottom:4px;">• <strong>Fat Loss / Deficit:</strong> Bodyweight (lbs) × 13 calories</p>
+<p style="margin-bottom:4px;">• <strong>Maintenance:</strong> Bodyweight (lbs) × 15 calories</p>
+<p style="margin-bottom:4px;">• <strong>Slight Surplus:</strong> Bodyweight (lbs) × 17 calories</p>
+<p style="margin-bottom:8px;">• <strong>Protein Target:</strong> Bodyweight (lbs) × 0.82g</p>
+<p style="font-size:0.72rem; color:#64748b; margin-bottom:10px;">*These are simple starting estimates. Adjust based on your progress, activity level, and goal. Use your target bodyweight if you have significant weight to lose.</p>
 <p><strong>TRACKING &amp; FLEXIBLE EATING:</strong></p>
 <ul style="margin-left: 16px; margin-top: 4px;">
-<li><strong>Tracking App:</strong> Log everything using Cronometer or MyFitnessPal.</li>
+<li><strong>Tracking App:</strong> You can log and track your calories, protein, and food directly inside SchmokeFit from the <strong>Macros</strong> tab.</li>
 <li><strong>Food Scale:</strong> Recommended for weighing food precisely at home.</li>
 <li><strong>Flexible Nutrition:</strong> You don't need 100% "clean" meals. Fast food like McDonald's works as long as it fits your daily calorie and protein targets!</li>
 </ul>
@@ -1857,6 +1917,16 @@
 <div class="card info-card">
 <div class="info-subtitle">OFF DAYS &amp; RECOVERY</div>
 <p>Muscle is built during recovery. Take advantage of off days and weekends to rest fully. Do as little physical activity as possible on rest days.</p>
+</div>
+
+<div style="margin:14px 0 6px;">
+  <button class="btn btn-blue" style="width:100%; min-height:48px; font-size:.78rem; font-weight:900;"
+    onclick="continueFromIntro();">
+    CONTINUE INTO THE APP →
+  </button>
+</div>
+<div style="margin:6px 0 0; text-align:center;">
+  <button class="app-tour-replay-small" type="button" onclick="startAppTour(true)">REPLAY APP TOUR</button>
 </div>
 </div>
 <!-- 01. WORKOUT TAB -->
@@ -5851,6 +5921,161 @@ renderWorkoutDashboard = function() {
   renderWorkoutDashboardBeforeNextWeekStart();
   renderNextWeekStartBanner();
 };
+
+
+// ===== FIRST-TIME GUIDED APP TOUR =====
+const appTourCompletedKey = 'schmokefit_tour_completed';
+let appTourIndex = 0;
+let appTourResizeHandler = null;
+
+const appTourSteps = [
+  {
+    tabId: 'workoutTab',
+    title: 'WORKOUTS',
+    copy: 'Your training hub. Start workouts, log every set, review past or upcoming weeks, add optional workouts, and adjust your training focus or style as your goals change.'
+  },
+  {
+    tabId: 'historyTab',
+    title: 'HISTORY',
+    copy: 'Review your completed training sessions and the weights and reps you logged so you can see what you have done and continue progressing over time.'
+  },
+  {
+    tabId: 'macrosTab',
+    title: 'MACROS',
+    copy: 'Set personalized calorie and protein targets based on your bodyweight and current goal. You can also log your food directly inside SchmokeFit using the built-in barcode scanner, food lookup, or manual entry, making it easy to track your daily nutrition without leaving the app.'
+  },
+  {
+    tabId: 'nutritionHistoryTab',
+    title: 'NUTRITION',
+    copy: 'Review your nutrition history and trends so you can see how consistently you are hitting your calorie and protein targets over time.'
+  },
+  {
+    tabId: 'tipsTab',
+    title: 'TIPS',
+    copy: 'Find quick reminders and practical guidance for training, nutrition, recovery, and getting the most from your SchmokeFit program.'
+  }
+];
+
+function appTourTabButton(tabId) {
+  return document.getElementById(`tabBtn-${tabId}`) ||
+    document.querySelector(`.nav-tabs button[onclick*="'${tabId}'"]`);
+}
+
+function continueFromIntro() {
+  switchTab('workoutTab', appTourTabButton('workoutTab'));
+  window.scrollTo({top:0, behavior:'smooth'});
+  if (localStorage.getItem(appTourCompletedKey) !== 'true') {
+    setTimeout(() => startAppTour(false), 260);
+  }
+}
+
+function startAppTour(forceReplay = false) {
+  if (!forceReplay && localStorage.getItem(appTourCompletedKey) === 'true') return;
+  closeAppTour(false);
+  appTourIndex = 0;
+
+  let overlay = document.getElementById('appTourOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'appTourOverlay';
+    overlay.className = 'app-tour-overlay';
+    overlay.innerHTML = `
+      <div class="app-tour-spotlight" id="appTourSpotlight"></div>
+      <div class="app-tour-card" id="appTourCard">
+        <div class="app-tour-step" id="appTourStep"></div>
+        <div class="app-tour-title" id="appTourTitle"></div>
+        <div class="app-tour-copy" id="appTourCopy"></div>
+        <div class="app-tour-actions">
+          <button class="app-tour-skip" type="button" onclick="finishAppTour()">SKIP TOUR</button>
+          <button class="app-tour-secondary" id="appTourBack" type="button" onclick="previousAppTourStep()">BACK</button>
+          <button class="app-tour-next" id="appTourNext" type="button" onclick="nextAppTourStep()">NEXT →</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+  }
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  appTourResizeHandler = () => positionAppTour();
+  window.addEventListener('resize', appTourResizeHandler);
+  showAppTourStep();
+}
+
+function showAppTourStep() {
+  const step = appTourSteps[appTourIndex];
+  const btn = appTourTabButton(step.tabId);
+  if (btn) {
+    // Preview each actual section while keeping the tour controls visible.
+    switchTab(step.tabId, btn);
+  }
+
+  document.getElementById('appTourStep').innerText = `QUICK TOUR • ${appTourIndex + 1} OF ${appTourSteps.length}`;
+  document.getElementById('appTourTitle').innerText = step.title;
+  document.getElementById('appTourCopy').innerText = step.copy;
+  document.getElementById('appTourBack').style.visibility = appTourIndex === 0 ? 'hidden' : 'visible';
+  document.getElementById('appTourNext').innerText =
+    appTourIndex === appTourSteps.length - 1 ? 'START USING SCHMOKEFIT →' : 'NEXT →';
+
+  setTimeout(positionAppTour, 40);
+}
+
+function positionAppTour() {
+  const step = appTourSteps[appTourIndex];
+  const target = appTourTabButton(step.tabId);
+  const spotlight = document.getElementById('appTourSpotlight');
+  const card = document.getElementById('appTourCard');
+  if (!target || !spotlight || !card) return;
+
+  const r = target.getBoundingClientRect();
+  const pad = 5;
+  spotlight.style.left = `${Math.max(4, r.left - pad)}px`;
+  spotlight.style.top = `${Math.max(4, r.top - pad)}px`;
+  spotlight.style.width = `${Math.max(30, r.width + pad * 2)}px`;
+  spotlight.style.height = `${Math.max(30, r.height + pad * 2)}px`;
+
+  // Prefer below the sticky tab row; move above only if necessary.
+  const cardWidth = Math.min(360, window.innerWidth - 28);
+  card.style.width = `${cardWidth}px`;
+  card.style.left = `${Math.max(14, Math.min(window.innerWidth - cardWidth - 14, r.left + r.width/2 - cardWidth/2))}px`;
+
+  const measuredHeight = card.offsetHeight || 230;
+  let top = r.bottom + 16;
+  if (top + measuredHeight > window.innerHeight - 12) {
+    top = Math.max(12, r.top - measuredHeight - 16);
+  }
+  card.style.top = `${top}px`;
+}
+
+function nextAppTourStep() {
+  if (appTourIndex >= appTourSteps.length - 1) {
+    finishAppTour();
+    return;
+  }
+  appTourIndex += 1;
+  showAppTourStep();
+}
+
+function previousAppTourStep() {
+  if (appTourIndex <= 0) return;
+  appTourIndex -= 1;
+  showAppTourStep();
+}
+
+function closeAppTour(markComplete = false) {
+  const overlay = document.getElementById('appTourOverlay');
+  if (overlay) overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  if (appTourResizeHandler) {
+    window.removeEventListener('resize', appTourResizeHandler);
+    appTourResizeHandler = null;
+  }
+  if (markComplete) localStorage.setItem(appTourCompletedKey, 'true');
+}
+
+function finishAppTour() {
+  closeAppTour(true);
+  switchTab('workoutTab', appTourTabButton('workoutTab'));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
 
 </script>
 </body>
