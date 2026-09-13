@@ -1563,6 +1563,97 @@
   }
 }
 
+
+/* EDITABLE TRAINING DAYS + EXTRA WORKOUTS */
+.weekly-workout-day-line {
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.workout-day-edit {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:24px;
+  height:22px;
+  padding:0 6px;
+  border:1px solid #2b3d49;
+  border-radius:6px;
+  background:#081117;
+  color:var(--accent-blue);
+  font-size:.48rem;
+  font-weight:900;
+  cursor:pointer;
+  user-select:none;
+}
+.workout-day-edit:hover { border-color:var(--accent-blue); }
+.extra-workouts-section {
+  margin:14px 0 4px;
+  border-top:1px solid #1f303b;
+  padding-top:12px;
+}
+.extra-workouts-heading-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+.extra-workouts-heading {
+  font-size:.66rem;
+  font-weight:950;
+  letter-spacing:.4px;
+  color:#fff;
+}
+.extra-workouts-sub {
+  font-size:.51rem;
+  color:var(--text-muted);
+  margin-top:2px;
+}
+.extra-workout-list {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-bottom:8px;
+}
+.extra-workout-card {
+  width:100%;
+  border:1px solid #263846;
+  border-radius:10px;
+  background:#0a1218;
+  padding:11px 12px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:7px;
+  color:#fff;
+  text-align:left;
+  cursor:pointer;
+}
+.extra-workout-card .extra-title {
+  font-size:.65rem;
+  font-weight:900;
+}
+.extra-workout-card .extra-meta {
+  grid-column:1 / -1;
+  font-size:.51rem;
+  color:var(--text-muted);
+}
+.extra-workout-badge {
+  align-self:center;
+  font-size:.48rem;
+  font-weight:950;
+  color:#c4b5fd;
+  background:rgba(139,92,246,.12);
+  padding:5px 7px;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.extra-add-btn {
+  width:100%;
+  min-height:38px;
+  margin:0 !important;
+}
+
 </style>
 <!-- iPhone / iPad -->
 <link href="schmokefit-icon.png" rel="apple-touch-icon"/>
@@ -1698,9 +1789,7 @@
 <div class="week-title" id="weekDisplayTitle">WEEK 1</div>
 <div class="workout-week-state" id="viewedWorkoutWeekTitle">ACTIVE WEEK</div>
 </div>
-
 <button aria-label="Previous week" class="week-row-nav-btn" id="workoutPrevWeekBtn" onclick="changeViewedWorkoutWeek(-1)">PREV WK</button><button aria-label="Next week" class="week-row-nav-btn" id="workoutNextWeekBtn" onclick="changeViewedWorkoutWeek(1)">NEXT WK</button><div class="phase-badge" id="phaseDisplayBadge"></div></div>
-
 <div class="week-progress-text" id="weekProgressSubtext">0 / 3 COMPLETE</div>
 <div class="workout-dashboard-progress"><div class="workout-dashboard-progress-fill" id="workoutDashboardProgressFill"></div></div>
 </div><div class="card focus-card">
@@ -1716,28 +1805,37 @@
 </div><div class="weekly-workout-list">
 <button class="weekly-workout-card" id="workoutCard-monday" onclick="openWorkoutDetail('monday')">
 <div>
-<div class="weekly-workout-day">Monday</div>
-<div class="weekly-workout-name">Chest &amp; Biceps</div>
+<div class="weekly-workout-day-line"><div class="weekly-workout-day" id="workoutDayLabel-monday">Monday</div><span class="workout-day-edit" onclick="event.stopPropagation(); editWorkoutDayName('monday')" title="Edit workout day name">EDIT</span></div>
+<div class="weekly-workout-name" id="workoutProgramName-monday">Workout 1 • Chest &amp; Biceps</div>
 </div>
 <div class="weekly-workout-status" id="workoutStatus-monday">NOT COMPLETED</div>
 <div class="weekly-workout-meta" id="workoutMeta-monday">Tap to start workout</div>
 </button>
 <button class="weekly-workout-card" id="workoutCard-wednesday" onclick="openWorkoutDetail('wednesday')">
 <div>
-<div class="weekly-workout-day">Wednesday</div>
-<div class="weekly-workout-name">Lower Body</div>
+<div class="weekly-workout-day-line"><div class="weekly-workout-day" id="workoutDayLabel-wednesday">Wednesday</div><span class="workout-day-edit" onclick="event.stopPropagation(); editWorkoutDayName('wednesday')" title="Edit workout day name">EDIT</span></div>
+<div class="weekly-workout-name" id="workoutProgramName-wednesday">Workout 2 • Lower Body</div>
 </div>
 <div class="weekly-workout-status" id="workoutStatus-wednesday">NOT COMPLETED</div>
 <div class="weekly-workout-meta" id="workoutMeta-wednesday">Tap to start workout</div>
 </button>
 <button class="weekly-workout-card" id="workoutCard-friday" onclick="openWorkoutDetail('friday')">
 <div>
-<div class="weekly-workout-day">Friday</div>
-<div class="weekly-workout-name">Shoulders, Back &amp; Arms</div>
+<div class="weekly-workout-day-line"><div class="weekly-workout-day" id="workoutDayLabel-friday">Friday</div><span class="workout-day-edit" onclick="event.stopPropagation(); editWorkoutDayName('friday')" title="Edit workout day name">EDIT</span></div>
+<div class="weekly-workout-name" id="workoutProgramName-friday">Workout 3 • Shoulders, Back &amp; Arms</div>
 </div>
 <div class="weekly-workout-status" id="workoutStatus-friday">NOT COMPLETED</div>
 <div class="weekly-workout-meta" id="workoutMeta-friday">Tap to start workout</div>
 </button>
+</div><div class="extra-workouts-section" id="extraWorkoutsSection">
+<div class="extra-workouts-heading-row">
+<div>
+<div class="extra-workouts-heading">EXTRA WORKOUTS</div>
+<div class="extra-workouts-sub">Optional workouts do not count toward the 3 program workouts.</div>
+</div>
+</div>
+<div class="extra-workout-list" id="extraWorkoutList"></div>
+<button class="btn btn-outline extra-add-btn" id="addExtraWorkoutBtn" onclick="startExtraWorkout()">+ ADD EXTRA WORKOUT</button>
 </div><div class="workout-cycle-actions">
 <button class="btn btn-blue" id="startNextWeekBtn" onclick="advanceActiveWorkoutWeek()">START NEXT WEEK →</button>
 <button class="btn btn-outline" onclick="requestManualNewCycle()">↻ START NEW 18-WEEK CYCLE</button>
@@ -4701,6 +4799,576 @@
     localStorage.setItem('schmokefit_workout_cycle', String(currentWorkoutCycle));
     syncCurrentWeekWorkoutCount();
     
+  
+    // ===== EDITABLE WORKOUT DAYS + OPTIONAL EXTRA WORKOUTS =====
+    const workoutProgramNames = {"monday": "Chest & Biceps", "wednesday": "Lower Body", "friday": "Shoulders, Back & Arms"};
+    const workoutSlotNumbers = { monday: 1, wednesday: 2, friday: 3 };
+    const defaultWorkoutDayNames = { monday: 'Monday', wednesday: 'Wednesday', friday: 'Friday' };
+    let editingExtraWorkoutId = null;
+    let editingExtraWorkoutName = '';
+
+    function workoutScheduleNames() {
+      try {
+        return JSON.parse(localStorage.getItem('schmokefit_workout_day_names') || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveWorkoutScheduleNames(names) {
+      localStorage.setItem('schmokefit_workout_day_names', JSON.stringify(names || {}));
+    }
+
+    function workoutDayNameKey(cycle, week, slot) {
+      return `${cycle}|${week}|${slot}`;
+    }
+
+    function getWorkoutDayName(week, slot, cycle = currentWorkoutCycle) {
+      const saved = workoutScheduleNames();
+      return saved[workoutDayNameKey(cycle, week, slot)] || defaultWorkoutDayNames[slot] || slot;
+    }
+
+    function editWorkoutDayName(slot) {
+      const existing = getWorkoutDayName(viewedWorkoutWeek, slot, currentWorkoutCycle);
+      const entered = prompt('Workout day/name:', existing);
+      if (entered === null) return;
+      const newName = entered.trim();
+      if (!newName) return;
+
+      const applyFuture = confirm(
+        `Apply "${newName}" to Week ${viewedWorkoutWeek} AND all future weeks in this cycle?\n\nOK = this week + future weeks\nCancel = this week only`
+      );
+
+      const names = workoutScheduleNames();
+      if (applyFuture) {
+        for (let week = viewedWorkoutWeek; week <= 18; week++) {
+          names[workoutDayNameKey(currentWorkoutCycle, week, slot)] = newName;
+        }
+      } else {
+        names[workoutDayNameKey(currentWorkoutCycle, viewedWorkoutWeek, slot)] = newName;
+      }
+      saveWorkoutScheduleNames(names);
+      renderWorkoutDashboard();
+    }
+
+    function extraWorkoutEntries(week = viewedWorkoutWeek, cycle = currentWorkoutCycle) {
+      return workoutHistoryItems().filter(item =>
+        item.type === 'EXTRA_WORKOUT' &&
+        workoutEntryCycle(item) === Number(cycle) &&
+        inferWorkoutWeek(item) === Number(week)
+      );
+    }
+
+    function renderExtraWorkouts() {
+      const list = document.getElementById('extraWorkoutList');
+      const addBtn = document.getElementById('addExtraWorkoutBtn');
+      if (!list || !addBtn) return;
+
+      list.innerHTML = '';
+      const items = extraWorkoutEntries(viewedWorkoutWeek, currentWorkoutCycle);
+      items.forEach(item => {
+        const card = document.createElement('button');
+        card.className = 'extra-workout-card';
+        card.type = 'button';
+        card.onclick = () => openExtraWorkout(item.entryId);
+        const exerciseCount = Array.isArray(item.exerciseList)
+          ? item.exerciseList.length
+          : Object.keys(item.structuredData || {}).length;
+        card.innerHTML = `
+          <div class="extra-title">${escapeHtml(item.customWorkoutName || 'Extra Workout')}</div>
+          <div class="extra-workout-badge">EXTRA</div>
+          <div class="extra-meta">${item.date || 'Saved workout'} • ${exerciseCount} exercise${exerciseCount === 1 ? '' : 's'} • Tap to view or edit</div>
+        `;
+        list.appendChild(card);
+      });
+
+      addBtn.style.display = viewedWorkoutWeek > currentWeek ? 'none' : 'block';
+    }
+
+    function startExtraWorkout() {
+      workoutCompletionPromptShown = false;
+      if (viewedWorkoutWeek > currentWeek) {
+        alert('Extra workouts can be added once that week is active.');
+        return;
+      }
+
+      const name = prompt('Name this extra workout:', 'Extra Workout');
+      if (name === null || !name.trim()) return;
+
+      editingExtraWorkoutId = null;
+      editingExtraWorkoutName = name.trim();
+      editingWorkoutWeek = viewedWorkoutWeek;
+      editingWorkoutDay = null;
+      editingWorkoutEntryId = null;
+      activeExercises = [];
+
+      const dashboard = document.getElementById('workoutDashboardView');
+      const detail = document.getElementById('workoutDetailView');
+      if (dashboard) dashboard.style.display = 'none';
+      if (detail) detail.style.display = 'block';
+
+      const title = document.getElementById('workoutDetailTitle');
+      const subtitle = document.getElementById('workoutDetailSubtitle');
+      const note = document.getElementById('workoutEditNote');
+      const saveBtn = document.getElementById('saveWorkoutButton');
+
+      if (title) title.innerText = editingExtraWorkoutName;
+      if (subtitle) subtitle.innerText = `Cycle ${currentWorkoutCycle} • Week ${editingWorkoutWeek} • Extra Workout`;
+      if (note) {
+        note.classList.remove('completed');
+        note.innerText = 'Optional extra workout. Add any exercises you want. This will not affect your 3 program-workout progress.';
+      }
+      if (saveBtn) {
+        saveBtn.innerText = '✓ SAVE EXTRA WORKOUT';
+        saveBtn.disabled = false;
+        saveBtn.style.opacity = '1';
+      }
+
+      resetTimerPosition();
+      renderWorkoutExercises();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openExtraWorkout(entryId) {
+      workoutCompletionPromptShown = true; // Editing a saved extra workout: don't auto-prompt.
+      const item = workoutHistoryItems().find(entry => entry.entryId === entryId && entry.type === 'EXTRA_WORKOUT');
+      if (!item) return;
+
+      editingExtraWorkoutId = item.entryId;
+      editingExtraWorkoutName = item.customWorkoutName || 'Extra Workout';
+      editingWorkoutWeek = inferWorkoutWeek(item);
+      editingWorkoutDay = null;
+      editingWorkoutEntryId = item.entryId;
+
+      if (Array.isArray(item.exerciseList) && item.exerciseList.length) {
+        activeExercises = JSON.parse(JSON.stringify(item.exerciseList));
+      } else {
+        activeExercises = Object.keys(item.structuredData || {}).map(name => ({
+          name, badge: 'CUSTOM', badgeClass: 'badge-custom'
+        }));
+      }
+
+      const dashboard = document.getElementById('workoutDashboardView');
+      const detail = document.getElementById('workoutDetailView');
+      if (dashboard) dashboard.style.display = 'none';
+      if (detail) detail.style.display = 'block';
+
+      const title = document.getElementById('workoutDetailTitle');
+      const subtitle = document.getElementById('workoutDetailSubtitle');
+      const note = document.getElementById('workoutEditNote');
+      const saveBtn = document.getElementById('saveWorkoutButton');
+
+      if (title) title.innerText = editingExtraWorkoutName;
+      if (subtitle) subtitle.innerText = `Cycle ${currentWorkoutCycle} • Week ${editingWorkoutWeek} • Extra Workout`;
+      if (note) {
+        note.classList.add('completed');
+        note.innerText = `✓ Saved ${item.date || ''}. You can update exercises, weight, or reps.`;
+      }
+      if (saveBtn) {
+        saveBtn.innerText = '✓ UPDATE EXTRA WORKOUT';
+        saveBtn.disabled = false;
+        saveBtn.style.opacity = '1';
+      }
+
+      resetTimerPosition();
+      renderWorkoutExercises();
+
+      if (item.structuredData) {
+        activeExercises.forEach((ex, idx) => {
+          const saved = item.structuredData[ex.name];
+          if (!saved) return;
+          ['1','2','3'].forEach(n => {
+            const w = document.querySelector(`.ex-${idx}-w${n}`);
+            const r = document.querySelector(`.ex-${idx}-r${n}`);
+            if (w && saved[`set${n}`]) w.value = saved[`set${n}`].w === '-' ? '' : saved[`set${n}`].w;
+            if (r && saved[`set${n}`]) r.value = saved[`set${n}`].r === '-' ? '' : saved[`set${n}`].r;
+          });
+        });
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function saveExtraWorkoutLog() {
+      const history = workoutHistoryItems();
+      const existingIndex = editingExtraWorkoutId
+        ? history.findIndex(item => item.entryId === editingExtraWorkoutId && item.type === 'EXTRA_WORKOUT')
+        : -1;
+      const existing = existingIndex >= 0 ? history[existingIndex] : null;
+
+      let summary = '';
+      const structuredData = {};
+
+      activeExercises.forEach((ex, idx) => {
+        const w1 = document.querySelector(`.ex-${idx}-w1`)?.value || '-';
+        const r1 = document.querySelector(`.ex-${idx}-r1`)?.value || '-';
+        const w2 = document.querySelector(`.ex-${idx}-w2`)?.value || '-';
+        const r2 = document.querySelector(`.ex-${idx}-r2`)?.value || '-';
+        const w3 = document.querySelector(`.ex-${idx}-w3`)?.value || '-';
+        const r3 = document.querySelector(`.ex-${idx}-r3`)?.value || '-';
+        summary += `• ${ex.name}:\n  ${w1} lbs × ${r1} | ${w2} lbs × ${r2} | ${w3} lbs × ${r3}\n`;
+        structuredData[ex.name] = {
+          set1: { w: w1, r: r1 },
+          set2: { w: w2, r: r2 },
+          set3: { w: w3, r: r3 }
+        };
+      });
+
+      const entry = {
+        ...(existing || {}),
+        entryId: existing?.entryId || `extra-c${currentWorkoutCycle}-w${editingWorkoutWeek}-${Date.now()}`,
+        workoutCycle: currentWorkoutCycle,
+        workoutWeek: Number(editingWorkoutWeek),
+        type: 'EXTRA_WORKOUT',
+        customWorkoutName: editingExtraWorkoutName || 'Extra Workout',
+        date: existing?.date || new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
+        title: `Cycle ${currentWorkoutCycle} • Week ${editingWorkoutWeek} - EXTRA: ${editingExtraWorkoutName || 'Extra Workout'}`,
+        details: summary,
+        structuredData,
+        exerciseList: JSON.parse(JSON.stringify(activeExercises))
+      };
+
+      if (existingIndex >= 0) history[existingIndex] = entry;
+      else history.unshift(entry);
+      localStorage.setItem('schmokefit_history', JSON.stringify(history));
+
+      alert(existing ? 'Extra workout updated! ✓' : 'Extra workout saved! ✓');
+      editingExtraWorkoutId = null;
+      editingExtraWorkoutName = '';
+      stopAndResetRestTimer();
+      closeWorkoutDetail();
+    }
+
+    // Override dashboard rendering to include editable labels and extra workouts.
+    function renderWorkoutDashboard() {
+      viewedWorkoutWeek = Math.min(18, Math.max(1, Number(viewedWorkoutWeek) || currentWeek));
+      const completed = workoutCompletionCount(viewedWorkoutWeek, currentWorkoutCycle);
+      const isActive = viewedWorkoutWeek === currentWeek;
+      const isPast = viewedWorkoutWeek < currentWeek;
+      const isFuture = viewedWorkoutWeek > currentWeek;
+
+      const weekTitle = document.getElementById('weekDisplayTitle');
+      const phaseBadge = document.getElementById('phaseDisplayBadge');
+      const progressText = document.getElementById('weekProgressSubtext');
+      const viewedTitle = document.getElementById('viewedWorkoutWeekTitle');
+      const progressFill = document.getElementById('workoutDashboardProgressFill');
+
+      if (weekTitle) weekTitle.innerText = `WEEK ${viewedWorkoutWeek}`;
+      if (phaseBadge) phaseBadge.innerText = viewedWorkoutWeek <= 10 ? 'PHASE 1: FAT LOSS DEFICIT' : 'PHASE 2: RECOMP PHASE';
+      if (viewedTitle) viewedTitle.innerText = isActive ? `ACTIVE WEEK • CYCLE ${currentWorkoutCycle}` : (isPast ? `PAST WEEK • CYCLE ${currentWorkoutCycle}` : `UPCOMING WEEK • CYCLE ${currentWorkoutCycle}`);
+      if (progressText) progressText.innerText = isFuture ? 'PROGRAM PREVIEW' : `${completed} / 3 PROGRAM WORKOUTS COMPLETE`;
+      if (progressFill) progressFill.style.width = isFuture ? '0%' : `${(completed / 3) * 100}%`;
+
+      ['monday','wednesday','friday'].forEach(day => {
+        const entry = getWorkoutEntry(viewedWorkoutWeek, day, currentWorkoutCycle);
+        const skipped = isWorkoutSkipped(viewedWorkoutWeek, day, currentWorkoutCycle) && !entry;
+        const card = document.getElementById(`workoutCard-${day}`);
+        const status = document.getElementById(`workoutStatus-${day}`);
+        const meta = document.getElementById(`workoutMeta-${day}`);
+        const dayLabel = document.getElementById(`workoutDayLabel-${day}`);
+        const programName = document.getElementById(`workoutProgramName-${day}`);
+        if (!card || !status || !meta) return;
+
+        if (dayLabel) dayLabel.childNodes[0].nodeValue = getWorkoutDayName(viewedWorkoutWeek, day, currentWorkoutCycle);
+        if (programName) programName.innerText = `Workout ${workoutSlotNumbers[day]} • ${workoutProgramNames[day]}`;
+
+        card.classList.toggle('completed', !!entry);
+        card.classList.toggle('skipped', skipped);
+        card.classList.toggle('upcoming', isFuture && !entry);
+
+        if (entry) {
+          status.innerText = '✓ COMPLETED';
+          meta.innerText = `${entry.date || 'Saved workout'} • Tap to view or edit`;
+        } else if (skipped) {
+          status.innerText = 'SKIPPED';
+          meta.innerText = 'Missed workout • Tap to add it later';
+        } else if (isFuture) {
+          status.innerText = 'UPCOMING';
+          meta.innerText = 'Tap to preview this workout';
+        } else if (isActive) {
+          status.innerText = 'NOT COMPLETED';
+          meta.innerText = 'Tap to start workout';
+        } else {
+          status.innerText = 'NOT LOGGED';
+          meta.innerText = 'Tap to view or add this past workout';
+        }
+      });
+
+      const prev = document.getElementById('workoutPrevWeekBtn');
+      const next = document.getElementById('workoutNextWeekBtn');
+      if (prev) prev.disabled = viewedWorkoutWeek <= 1;
+      if (next) next.disabled = viewedWorkoutWeek >= 18;
+
+      const advanceBtn = document.getElementById('startNextWeekBtn');
+      const cycleNote = document.getElementById('workoutCycleNote');
+      if (advanceBtn) {
+        advanceBtn.style.display = isActive ? 'block' : 'none';
+        advanceBtn.innerText = currentWeek >= 18 ? 'FINISH WEEK 18 →' : `START WEEK ${currentWeek + 1} →`;
+      }
+      if (cycleNote) {
+        const skippedCount = ['monday','wednesday','friday'].filter(day => isWorkoutSkipped(viewedWorkoutWeek, day, currentWorkoutCycle) && !getWorkoutEntry(viewedWorkoutWeek, day, currentWorkoutCycle)).length;
+        cycleNote.innerText = isActive
+          ? (completed === 3 ? 'All 3 program workouts complete. Advance whenever you are ready.' : `${completed} of 3 program workouts complete. You can still advance; missed workouts will be marked skipped.`)
+          : (skippedCount ? `${skippedCount} workout${skippedCount === 1 ? '' : 's'} skipped in this week. You can still open and log them later.` : 'Your previous workout history is preserved.');
+      }
+
+      renderExtraWorkouts();
+    }
+
+    // Override normal workout detail so renamed day labels appear without changing the underlying workout slot.
+    function openWorkoutDetail(day) {
+      workoutCompletionPromptShown = false;
+      editingExtraWorkoutId = null;
+      editingExtraWorkoutName = '';
+
+      const existing = getWorkoutEntry(viewedWorkoutWeek, day, currentWorkoutCycle);
+      const isFuture = viewedWorkoutWeek > currentWeek;
+
+      editingWorkoutWeek = viewedWorkoutWeek;
+      editingWorkoutDay = day;
+      editingWorkoutEntryId = existing?.entryId || null;
+
+      const select = document.getElementById('workoutDaySelect');
+      if (select) select.value = day;
+
+      const dashboard = document.getElementById('workoutDashboardView');
+      const detail = document.getElementById('workoutDetailView');
+      if (dashboard) dashboard.style.display = 'none';
+      if (detail) detail.style.display = 'block';
+
+      const customDay = getWorkoutDayName(editingWorkoutWeek, day, currentWorkoutCycle);
+      const title = document.getElementById('workoutDetailTitle');
+      const subtitle = document.getElementById('workoutDetailSubtitle');
+      if (title) title.innerText = customDay;
+      if (subtitle) subtitle.innerText = `Cycle ${currentWorkoutCycle} • Week ${editingWorkoutWeek} • Workout ${workoutSlotNumbers[day]} • ${workoutProgramNames[day]}`;
+
+      const note = document.getElementById('workoutEditNote');
+      const saveBtn = document.getElementById('saveWorkoutButton');
+
+      if (isFuture) {
+        note?.classList.remove('completed');
+        if (note) note.innerText = `Week ${editingWorkoutWeek} preview. You can look ahead at the workout, but it cannot be logged until it becomes the active week.`;
+        if (saveBtn) {
+          saveBtn.innerText = 'UPCOMING WORKOUT — PREVIEW ONLY';
+          saveBtn.disabled = true;
+          saveBtn.style.opacity = '.45';
+        }
+      } else if (existing) {
+        note?.classList.add('completed');
+        if (note) note.innerText = `✓ Completed ${existing.date || ''}. You can update any saved weight, reps, or exercise.`;
+        if (saveBtn) {
+          saveBtn.innerText = '✓ UPDATE SAVED WORKOUT';
+          saveBtn.disabled = false;
+          saveBtn.style.opacity = '1';
+        }
+      } else {
+        note?.classList.remove('completed');
+        if (note) note.innerText = isWorkoutSkipped(editingWorkoutWeek, day, currentWorkoutCycle)
+          ? 'This workout was marked skipped. You can log it now and it will change to completed.'
+          : (viewedWorkoutWeek === currentWeek ? `Week ${editingWorkoutWeek} • This workout has not been completed yet.` : `Week ${editingWorkoutWeek} • No workout was logged. You can add it now if needed.`);
+        if (saveBtn) {
+          saveBtn.innerText = viewedWorkoutWeek === currentWeek ? '✓ LOG WORKOUT COMPLETE' : '✓ SAVE PAST WORKOUT';
+          saveBtn.disabled = false;
+          saveBtn.style.opacity = '1';
+        }
+      }
+
+      loadSelectedWorkoutRoutine(day, existing);
+
+      if (existing?.structuredData) {
+        activeExercises.forEach((ex, idx) => {
+          const saved = existing.structuredData[ex.name];
+          if (!saved) return;
+          ['1','2','3'].forEach(n => {
+            const w = document.querySelector(`.ex-${idx}-w${n}`);
+            const r = document.querySelector(`.ex-${idx}-r${n}`);
+            if (w && saved[`set${n}`]) w.value = saved[`set${n}`].w === '-' ? '' : saved[`set${n}`].w;
+            if (r && saved[`set${n}`]) r.value = saved[`set${n}`].r === '-' ? '' : saved[`set${n}`].r;
+          });
+        });
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Override save: extra workouts stay optional; normal workouts still drive 3-workout progress.
+    const saveProgramWorkoutWithSchedule = saveWorkoutLog;
+    function saveWorkoutLog() {
+      if (editingExtraWorkoutId || (editingWorkoutDay === null && editingExtraWorkoutName)) {
+        saveExtraWorkoutLog();
+        return;
+      }
+
+      const day = editingWorkoutDay || document.getElementById('workoutDaySelect')?.value || 'monday';
+      const week = editingWorkoutWeek || currentWeek;
+      if (week > currentWeek) {
+        alert('Upcoming workouts are preview-only until that week becomes active.');
+        return;
+      }
+
+      const history = workoutHistoryItems();
+      const existingIndex = history.findIndex(item =>
+        item.type === 'WORKOUT' &&
+        workoutEntryCycle(item) === Number(currentWorkoutCycle) &&
+        inferWorkoutWeek(item) === Number(week) &&
+        inferWorkoutDay(item) === day
+      );
+      const existing = existingIndex >= 0 ? history[existingIndex] : null;
+
+      let summary = '';
+      const structuredData = {};
+      activeExercises.forEach((ex, idx) => {
+        const w1 = document.querySelector(`.ex-${idx}-w1`)?.value || '-';
+        const r1 = document.querySelector(`.ex-${idx}-r1`)?.value || '-';
+        const w2 = document.querySelector(`.ex-${idx}-w2`)?.value || '-';
+        const r2 = document.querySelector(`.ex-${idx}-r2`)?.value || '-';
+        const w3 = document.querySelector(`.ex-${idx}-w3`)?.value || '-';
+        const r3 = document.querySelector(`.ex-${idx}-r3`)?.value || '-';
+
+        summary += `• ${ex.name}:\n  ${w1} lbs × ${r1} | ${w2} lbs × ${r2} | ${w3} lbs × ${r3}\n`;
+        structuredData[ex.name] = {
+          set1: { w: w1, r: r1 },
+          set2: { w: w2, r: r2 },
+          set3: { w: w3, r: r3 }
+        };
+      });
+
+      const customDayName = getWorkoutDayName(week, day, currentWorkoutCycle);
+      const entry = {
+        ...(existing || {}),
+        entryId: existing?.entryId || `workout-c${currentWorkoutCycle}-w${week}-${day}`,
+        workoutCycle: currentWorkoutCycle,
+        workoutWeek: Number(week),
+        workoutDay: day,
+        workoutDayName: customDayName,
+        trainingFocus: existing?.trainingFocus || currentTrainingFocus,
+        date: existing?.date || new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
+        type: 'WORKOUT',
+        title: `Cycle ${currentWorkoutCycle} • Week ${week} - ${customDayName}: ${workoutProgramNames[day]}`,
+        details: summary,
+        structuredData
+      };
+
+      if (existingIndex >= 0) history[existingIndex] = entry;
+      else history.unshift(entry);
+      localStorage.setItem('schmokefit_history', JSON.stringify(history));
+      setWorkoutSkipped(week, day, false, currentWorkoutCycle);
+
+      if (Number(week) === Number(currentWeek)) syncCurrentWeekWorkoutCount();
+
+      const completed = workoutCompletionCount(week, currentWorkoutCycle);
+      if (!existing && Number(week) === Number(currentWeek) && currentWeek === 18 && completed >= 3) {
+        markProgramResetPending();
+        stopAndResetRestTimer();
+        updateWeekTrackerDisplay();
+        closeWorkoutDetail();
+        alert('Workout saved! 🎉 You completed Week 18 and finished this training block.');
+        programResetMode = 'complete';
+        openProgramResetPrompt('complete');
+        return;
+      }
+
+      alert(existing
+        ? 'Saved workout updated! ✓'
+        : (Number(week) === Number(currentWeek)
+            ? `Workout saved! ${completed} of 3 program workouts complete for Week ${currentWeek}.`
+            : 'Past workout saved! ✓'));
+
+      stopAndResetRestTimer();
+      updateWeekTrackerDisplay();
+      closeWorkoutDetail();
+    }
+
+    // Clear custom-detail state whenever returning to the dashboard.
+    function closeWorkoutDetail() {
+      // Any time we leave a workout screen, fully stop and reset the rest timer.
+      stopAndResetRestTimer();
+      editingExtraWorkoutId = null;
+      editingExtraWorkoutName = '';
+      editingWorkoutWeek = null;
+      editingWorkoutDay = null;
+      editingWorkoutEntryId = null;
+      const dashboard = document.getElementById('workoutDashboardView');
+      const detail = document.getElementById('workoutDetailView');
+      if (dashboard) dashboard.style.display = 'block';
+      if (detail) detail.style.display = 'none';
+      resetTimerPosition();
+      renderWorkoutDashboard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+
+    // ===== WORKOUT COMPLETION DETECTION + TIMER CLEANUP =====
+    let workoutCompletionPromptShown = false;
+
+    function stopAndResetRestTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      totalSeconds = 150;
+      updateTimerDisplay();
+    }
+
+    function allWorkoutSetsLogged() {
+      if (!Array.isArray(activeExercises) || activeExercises.length === 0) return false;
+
+      for (let idx = 0; idx < activeExercises.length; idx++) {
+        for (let setNum = 1; setNum <= 3; setNum++) {
+          const weight = document.querySelector(`.ex-${idx}-w${setNum}`);
+          const reps = document.querySelector(`.ex-${idx}-r${setNum}`);
+          if (!weight || !reps) return false;
+          if (String(weight.value).trim() === '' || String(reps.value).trim() === '') return false;
+        }
+      }
+      return true;
+    }
+
+    function maybePromptWorkoutComplete() {
+      const detail = document.getElementById('workoutDetailView');
+      if (!detail || detail.style.display === 'none') return;
+      if (workoutCompletionPromptShown) return;
+
+      // Existing saved workouts are edits, not newly completed sessions.
+      if (editingWorkoutEntryId && !editingExtraWorkoutName) return;
+      if (editingExtraWorkoutId) return;
+
+      if (!allWorkoutSetsLogged()) return;
+
+      workoutCompletionPromptShown = true;
+
+      // Let the final keystroke/change finish before opening the confirmation.
+      setTimeout(() => {
+        const shouldLog = confirm('Workout complete! All weights and reps are filled in.\n\nLog this workout now?');
+        if (shouldLog) {
+          saveWorkoutLog();
+        }
+      }, 80);
+    }
+
+    // Only check completion after the user FINISHES a field:
+    // 1) clicking/tapping away from it ("change"), or
+    // 2) pressing Enter.
+    // We intentionally do NOT listen to "input", so typing "15" will not
+    // trigger after the first digit "1".
+    document.addEventListener('change', (event) => {
+      if (event.target?.closest?.('#exerciseContainer') && event.target.classList.contains('set-input')) {
+        maybePromptWorkoutComplete();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      const target = event.target;
+      if (
+        event.key === 'Enter' &&
+        target?.closest?.('#exerciseContainer') &&
+        target.classList.contains('set-input')
+      ) {
+        event.preventDefault();
+        target.blur();
+        // blur/change can fire first; the prompt-shown guard prevents duplicates.
+        setTimeout(maybePromptWorkoutComplete, 0);
+      }
+    });
+
   </script>
 </body>
 </html>
