@@ -1673,6 +1673,66 @@
   background:rgba(56,189,248,.12) !important;
 }
 
+
+/* CLEAN WORKOUT STATUS COLORS */
+.weekly-workout-card.completed,
+.weekly-workout-card.in-progress,
+.weekly-workout-card.skipped,
+.weekly-workout-card.upcoming {
+  background: var(--card-bg, #0b1218) !important;
+  border-color: var(--border, #263846) !important;
+}
+.weekly-workout-card.completed .weekly-workout-status { color:#22c55e !important; background:transparent !important; }
+.weekly-workout-card.in-progress .weekly-workout-status { color:#38bdf8 !important; background:transparent !important; }
+.weekly-workout-card.skipped .weekly-workout-status { color:#fbbf24 !important; background:transparent !important; }
+.weekly-workout-card.upcoming .weekly-workout-status,
+.weekly-workout-card:not(.completed):not(.in-progress):not(.skipped):not(.upcoming) .weekly-workout-status {
+  color:var(--text-muted) !important; background:transparent !important;
+}
+.extra-workout-card.in-progress { background:#0a1218 !important; border-color:#263846 !important; }
+.extra-workout-card.in-progress .extra-workout-badge { color:#38bdf8 !important; background:transparent !important; }
+
+
+/* STATUS PRIORITY FIX — completed must always override in-progress */
+.weekly-workout-card.completed .weekly-workout-status,
+.weekly-workout-card.completed.in-progress .weekly-workout-status {
+  color: #22c55e !important;
+  background: transparent !important;
+}
+.weekly-workout-card.completed.in-progress {
+  background: var(--card-bg, #0b1218) !important;
+  border-color: var(--border, #263846) !important;
+}
+
+
+/* START-NEXT-WEEK PREVIEW BANNER */
+.next-week-start-banner {
+  display: none;
+  margin: 8px 0 12px;
+  padding: 12px;
+  border: 1px solid rgba(56,189,248,.30);
+  border-radius: 12px;
+  background: rgba(56,189,248,.07);
+}
+.next-week-start-banner.show { display: block; }
+.next-week-start-title {
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+  color: #e2e8f0;
+  margin-bottom: 4px;
+}
+.next-week-start-copy {
+  font-size: .62rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  margin-bottom: 9px;
+}
+.next-week-start-banner .btn {
+  width: 100%;
+  margin: 0;
+}
+
 </style>
 <!-- iPhone / iPad -->
 <link href="schmokefit-icon.png" rel="apple-touch-icon"/>
@@ -1691,7 +1751,7 @@
 <!-- INITIAL LOGIN / REGISTER SCREEN -->
 <div id="loginOverlay">
 <div class="large-avatar-wrapper">
-<img alt="Avatar" class="large-avatar-img" onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300aaff\' stroke-width=\'1.5\'&gt;&lt;circle cx=\'12\' cy=\'8\' r=\'4\'/&gt;&lt;path d=\'M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2\'/&gt;&lt;/svg&gt;'" src="avatar.jpg"/>
+<img alt="Avatar" class="large-avatar-img" onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300aaff\' stroke-width=\'1.5\'&gt;&lt;circle cx=\'12\' cy=\'8\' r=\'4\'/&gt;&lt;path d=\'M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2\'/&gt;&lt;/svg&gt;'" src="avatar.jpg?v=movie-star-20260913"/>
 </div>
 <div class="brand-title" style="font-size: 1.8rem;">SCHMOKE<span>FIT</span></div>
 <div class="brand-subtitle" id="loginSubheading" style="font-size: 0.9rem;">USER ACCESS</div>
@@ -1715,7 +1775,7 @@
 <!-- HEADER BRANDING -->
 <div class="header-card">
 <div class="avatar-wrapper">
-<img alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300aaff\' stroke-width=\'1.5\'&gt;&lt;circle cx=\'12\' cy=\'8\' r=\'4\'/&gt;&lt;path d=\'M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2\'/&gt;&lt;/svg&gt;'" src="avatar.jpg"/>
+<img alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300aaff\' stroke-width=\'1.5\'&gt;&lt;circle cx=\'12\' cy=\'8\' r=\'4\'/&gt;&lt;path d=\'M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2\'/&gt;&lt;/svg&gt;'" src="avatar.jpg?v=movie-star-20260913"/>
 </div>
 <div class="brand-title">SCHMOKE<span>FIT</span></div>
 <div class="brand-subtitle">MOVIE STAR APP</div>
@@ -5603,7 +5663,11 @@
 
       ['monday','wednesday','friday'].forEach(day => {
         const entry = getWorkoutEntry(viewedWorkoutWeek, day, currentWorkoutCycle);
-        if (entry) return;
+        if (entry) {
+          const completedCard = document.getElementById(`workoutCard-${day}`);
+          if (completedCard) completedCard.classList.remove('in-progress');
+          return;
+        }
 
         const draft = getProgramWorkoutDraft(viewedWorkoutWeek, day, currentWorkoutCycle);
         const card = document.getElementById(`workoutCard-${day}`);
@@ -5708,6 +5772,85 @@
     window.addEventListener('beforeunload', () => {
       saveCurrentWorkoutDraft();
     });
+
+
+// ===== SECONDARY "START NEXT WEEK" ACTION WHEN PREVIEWING ONE WEEK AHEAD =====
+function ensureNextWeekStartBanner() {
+  const dashboard = document.getElementById('workoutDashboardView');
+  if (!dashboard) return null;
+
+  let banner = document.getElementById('nextWeekStartBanner');
+  if (banner) return banner;
+
+  banner = document.createElement('div');
+  banner.id = 'nextWeekStartBanner';
+  banner.className = 'next-week-start-banner';
+  banner.innerHTML = `
+    <div class="next-week-start-title" id="nextWeekStartTitle">READY FOR THE NEXT WEEK?</div>
+    <div class="next-week-start-copy" id="nextWeekStartCopy"></div>
+    <button class="btn btn-blue" id="previewStartNextWeekBtn" type="button" onclick="startPreviewedNextWeek()">START NEXT WEEK →</button>
+  `;
+
+  // Put it near the top of the workout page: after the week tracker/focus area
+  // and before the workout cards whenever possible.
+  const workoutList = dashboard.querySelector('.weekly-workout-list');
+  if (workoutList?.parentNode) {
+    workoutList.parentNode.insertBefore(banner, workoutList);
+  } else {
+    dashboard.prepend(banner);
+  }
+  return banner;
+}
+
+function renderNextWeekStartBanner() {
+  const banner = ensureNextWeekStartBanner();
+  if (!banner) return;
+
+  const isExactlyNextWeek =
+    currentWeek < 18 &&
+    viewedWorkoutWeek === currentWeek + 1;
+
+  banner.classList.toggle('show', isExactlyNextWeek);
+  if (!isExactlyNextWeek) return;
+
+  const title = document.getElementById('nextWeekStartTitle');
+  const copy = document.getElementById('nextWeekStartCopy');
+  const btn = document.getElementById('previewStartNextWeekBtn');
+
+  if (title) title.innerText = `WEEK ${viewedWorkoutWeek} IS UPCOMING`;
+  if (copy) {
+    const completed = workoutCompletionCount(currentWeek, currentWorkoutCycle);
+    copy.innerText = completed === 3
+      ? `Week ${currentWeek} is complete. Ready to make Week ${viewedWorkoutWeek} your active week?`
+      : `${completed} of 3 workouts are complete in Week ${currentWeek}. You can still move on; unfinished workouts will be marked skipped.`;
+  }
+  if (btn) btn.innerText = `START WEEK ${viewedWorkoutWeek} →`;
+}
+
+function startPreviewedNextWeek() {
+  if (currentWeek >= 18 || viewedWorkoutWeek !== currentWeek + 1) return;
+
+  const previewWeek = viewedWorkoutWeek;
+  const activeBefore = currentWeek;
+
+  // Reuse the exact same advancement/skip-confirmation logic as the existing
+  // bottom button by temporarily pointing the view at the active week.
+  viewedWorkoutWeek = currentWeek;
+  advanceActiveWorkoutWeek();
+
+  // If the user cancelled the skip confirmation, keep them on the previewed week.
+  if (currentWeek === activeBefore) {
+    viewedWorkoutWeek = previewWeek;
+    renderWorkoutDashboard();
+  }
+}
+
+// Add the banner after every dashboard render, including the autosave/status wrapper.
+const renderWorkoutDashboardBeforeNextWeekStart = renderWorkoutDashboard;
+renderWorkoutDashboard = function() {
+  renderWorkoutDashboardBeforeNextWeekStart();
+  renderNextWeekStartBanner();
+};
 
 </script>
 </body>
