@@ -1818,6 +1818,48 @@
       border:1px solid var(--input-border);border-radius:999px;padding:2px 5px
     }
 
+
+    /* NUTRITION TREND RANGE TOGGLE */
+    .nutrition-view-toggle{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:6px;
+      margin-bottom:10px;
+    }
+    .nutrition-view-btn{
+      min-height:34px;
+      border:1px solid var(--input-border);
+      border-radius:8px;
+      background:transparent;
+      color:var(--text-muted);
+      font-size:.62rem;
+      font-weight:900;
+      letter-spacing:.04em;
+      cursor:pointer;
+    }
+    .nutrition-view-btn.active{
+      border-color:var(--accent-blue);
+      color:var(--accent-blue);
+      background:rgba(56,189,248,.08);
+    }
+    .weekly-bar-chart.period-month,
+    .weekly-bar-chart.period-quarter{
+      overflow-x:auto;
+      overflow-y:hidden;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:thin;
+    }
+    .weekly-bar-chart.period-month .nutrition-chart-grid{min-width:920px;}
+    .weekly-bar-chart.period-quarter .nutrition-chart-grid{min-width:640px;}
+    .weekly-bar-chart.period-month .weekly-bar-value{font-size:.45rem;}
+    .weekly-bar-chart.period-month .weekly-bar-day{font-size:.49rem;}
+    .weekly-bar-chart.period-month .weekly-bar-date{font-size:.44rem;}
+    .weekly-bar-chart.period-quarter .weekly-bar-day{font-size:.50rem;}
+    @media(max-width:520px){
+      .weekly-bar-chart.period-month .nutrition-chart-grid{min-width:980px;}
+      .weekly-bar-chart.period-quarter .nutrition-chart-grid{min-width:720px;}
+    }
+
 </style>
 <!-- iPhone / iPad -->
 <link href="schmokefit-icon.png" rel="apple-touch-icon"/>
@@ -2180,8 +2222,13 @@
 </div>
 <!-- 04. NUTRITION HISTORY TAB -->
 <div class="tab-content" id="nutritionHistoryTab">
-<div class="section-title-banner">04. WEEKLY NUTRITION HISTORY</div>
+<div class="section-title-banner">04. NUTRITION TRENDS</div>
 <div class="card">
+<div class="nutrition-view-toggle" role="group" aria-label="Nutrition graph range">
+<button class="nutrition-view-btn active" id="nutritionView-week" onclick="setNutritionHistoryView('week')">WEEK</button>
+<button class="nutrition-view-btn" id="nutritionView-month" onclick="setNutritionHistoryView('month')">MONTH</button>
+<button class="nutrition-view-btn" id="nutritionView-quarter" onclick="setNutritionHistoryView('quarter')">QUARTER</button>
+</div>
 <div class="nutrition-history-controls">
 <button class="btn-sm btn-dark" onclick="changeNutritionHistoryWeek(-1)">← PREV</button>
 <div class="nutrition-week-label" id="nutritionHistoryWeekLabel">THIS WEEK</div>
@@ -2194,14 +2241,14 @@
 <div class="card nutrition-chart-card">
 <div class="nutrition-chart-title">
 <strong>DAILY CALORIES</strong>
-<span>green dashed line = goal</span>
+<span id="calorieChartRangeNote">daily view • dashed line = goal</span>
 </div>
 <div class="weekly-bar-chart" id="calorieWeeklyChart"></div>
 </div>
 <div class="card nutrition-chart-card">
 <div class="nutrition-chart-title">
 <strong>DAILY PROTEIN</strong>
-<span>green dashed line = goal</span>
+<span id="proteinChartRangeNote">daily view • dashed line = goal</span>
 </div>
 <div class="weekly-bar-chart" id="proteinWeeklyChart"></div>
 </div>
@@ -2291,6 +2338,8 @@
     let barcodeScanLocked = false;
     let lastScannedBarcode = '';
     let nutritionHistoryWeekOffset = 0;
+    let nutritionHistoryView = 'week';
+    let nutritionHistoryPeriodOffset = 0;
     let editingFoodMeal = null;
     let editingFoodIndex = null;
     let nutritionActiveDateStamp = localDateStamp(new Date());
@@ -4090,9 +4139,81 @@
       return d;
     }
 
-    function changeNutritionHistoryWeek(delta) {
-      nutritionHistoryWeekOffset = Math.min(0, nutritionHistoryWeekOffset + delta);
+    function setNutritionHistoryView(view) {
+      if (!['week','month','quarter'].includes(view)) return;
+      nutritionHistoryView = view;
+      nutritionHistoryPeriodOffset = 0;
+      nutritionHistoryWeekOffset = 0;
+
+      document.querySelectorAll('.nutrition-view-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`nutritionView-${view}`)?.classList.add('active');
       renderNutritionHistoryWeek();
+    }
+
+    function changeNutritionHistoryWeek(delta) {
+      nutritionHistoryPeriodOffset = Math.min(0, nutritionHistoryPeriodOffset + delta);
+      nutritionHistoryWeekOffset = nutritionHistoryPeriodOffset;
+      renderNutritionHistoryWeek();
+    }
+
+    function addMonthsSafe(date, delta) {
+      return new Date(date.getFullYear(), date.getMonth() + delta, 1);
+    }
+
+    function quarterStart(date) {
+      return new Date(date.getFullYear(), Math.floor(date.getMonth() / 3) * 3, 1);
+    }
+
+    function periodDailyRow(date) {
+      const stamp = localDateStamp(date);
+      const totals = nutritionTotalsFromLog(getNutritionLogForDate(stamp));
+      return {
+        date,
+        stamp,
+        sourceStamps: [stamp],
+        calories: Math.round(totals.calories),
+        protein: round1(totals.protein)
+      };
+    }
+
+    function quarterWeeklyRows(start, end) {
+      const rows = [];
+      let cursor = new Date(start);
+
+      while (cursor <= end) {
+        const bucketStart = new Date(cursor);
+        const bucketEnd = new Date(Math.min(addDays(bucketStart, 6).getTime(), end.getTime()));
+        const sourceStamps = [];
+        let calorieTotal = 0;
+        let proteinTotal = 0;
+        let loggedDays = 0;
+
+        for (let d = new Date(bucketStart); d <= bucketEnd; d = addDays(d, 1)) {
+          const stamp = localDateStamp(d);
+          sourceStamps.push(stamp);
+          const totals = nutritionTotalsFromLog(getNutritionLogForDate(stamp));
+          const hasFood = Object.values(getNutritionLogForDate(stamp) || {})
+            .some(items => Array.isArray(items) && items.length > 0);
+          if (hasFood) {
+            calorieTotal += Number(totals.calories) || 0;
+            proteinTotal += Number(totals.protein) || 0;
+            loggedDays += 1;
+          }
+        }
+
+        rows.push({
+          date: bucketStart,
+          stamp: sourceStamps[0],
+          sourceStamps,
+          calories: loggedDays ? Math.round(calorieTotal / loggedDays) : 0,
+          protein: loggedDays ? round1(proteinTotal / loggedDays) : 0,
+          shortLabel: bucketStart.toLocaleDateString('en-US', { month:'short', day:'numeric' }),
+          subLabel: loggedDays ? `${loggedDays}d` : '—'
+        });
+
+        cursor = addDays(bucketEnd, 1);
+      }
+      return rows;
     }
 
     function renderNutritionHistoryWeek() {
@@ -4102,38 +4223,69 @@
       const nextBtn = document.getElementById('nutritionHistoryNextBtn');
       if (!calorieChart || !proteinChart || !label) return;
 
-      const currentWeekStart = getWeekStart(new Date());
-      const weekStart = addDays(currentWeekStart, nutritionHistoryWeekOffset * 7);
-      const weekEnd = addDays(weekStart, 6);
+      const now = new Date();
+      let rows = [];
+      let rangeLabel = '';
+      let chartNote = 'daily view • dashed line = goal';
 
-      const rows = [];
-      for (let i = 0; i < 7; i++) {
-        const date = addDays(weekStart, i);
-        const stamp = localDateStamp(date);
-        const totals = nutritionTotalsFromLog(getNutritionLogForDate(stamp));
-        rows.push({
-          date,
-          stamp,
-          calories: Math.round(totals.calories),
-          protein: round1(totals.protein)
-        });
+      if (nutritionHistoryView === 'month') {
+        const monthStart = addMonthsSafe(now, nutritionHistoryPeriodOffset);
+        const monthEnd = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0);
+        for (let d = new Date(monthStart); d <= monthEnd; d = addDays(d, 1)) {
+          const row = periodDailyRow(d);
+          row.shortLabel = String(d.getDate());
+          row.subLabel = d.toLocaleDateString('en-US', { weekday:'narrow' });
+          rows.push(row);
+        }
+        rangeLabel = nutritionHistoryPeriodOffset === 0
+          ? `THIS MONTH • ${monthStart.toLocaleDateString('en-US', { month:'long', year:'numeric' })}`
+          : monthStart.toLocaleDateString('en-US', { month:'long', year:'numeric' });
+        chartNote = 'daily view • swipe graph sideways • dashed line = goal';
+      } else if (nutritionHistoryView === 'quarter') {
+        const currentQuarter = quarterStart(now);
+        const quarterAnchor = new Date(currentQuarter.getFullYear(), currentQuarter.getMonth() + nutritionHistoryPeriodOffset * 3, 1);
+        const qStart = quarterStart(quarterAnchor);
+        const qEnd = new Date(qStart.getFullYear(), qStart.getMonth() + 3, 0);
+        rows = quarterWeeklyRows(qStart, qEnd);
+        const qNum = Math.floor(qStart.getMonth() / 3) + 1;
+        rangeLabel = `${nutritionHistoryPeriodOffset === 0 ? 'THIS QUARTER • ' : ''}Q${qNum} ${qStart.getFullYear()}`;
+        chartNote = 'weekly daily-average • dashed line = daily goal';
+      } else {
+        const currentWeekStart = getWeekStart(now);
+        const weekStart = addDays(currentWeekStart, nutritionHistoryPeriodOffset * 7);
+        const weekEnd = addDays(weekStart, 6);
+        for (let i = 0; i < 7; i++) {
+          rows.push(periodDailyRow(addDays(weekStart, i)));
+        }
+        const startLabel = weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const endLabel = weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        rangeLabel = nutritionHistoryPeriodOffset === 0 ? `THIS WEEK • ${startLabel} – ${endLabel}` : `${startLabel} – ${endLabel}`;
       }
 
-      const startLabel = weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      const endLabel = weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      label.innerText = nutritionHistoryWeekOffset === 0 ? `THIS WEEK • ${startLabel} – ${endLabel}` : `${startLabel} – ${endLabel}`;
-      if (nextBtn) nextBtn.disabled = nutritionHistoryWeekOffset >= 0;
+      label.innerText = rangeLabel;
+      if (nextBtn) nextBtn.disabled = nutritionHistoryPeriodOffset >= 0;
+
+      const calorieNote = document.getElementById('calorieChartRangeNote');
+      const proteinNote = document.getElementById('proteinChartRangeNote');
+      if (calorieNote) calorieNote.innerText = chartNote;
+      if (proteinNote) proteinNote.innerText = chartNote;
+
+      calorieChart.classList.remove('period-week','period-month','period-quarter');
+      proteinChart.classList.remove('period-week','period-month','period-quarter');
+      calorieChart.classList.add(`period-${nutritionHistoryView}`);
+      proteinChart.classList.add(`period-${nutritionHistoryView}`);
 
       const currentGoals = getNutritionGoals();
-      const savedGoals = rows
-        .map(r => getNutritionGoalsForDate(r.stamp))
+      const allStamps = rows.flatMap(r => r.sourceStamps || [r.stamp]).filter(Boolean);
+      const savedGoals = allStamps
+        .map(stamp => getNutritionGoalsForDate(stamp))
         .filter(g => g && (Number(g.calories) > 0 || Number(g.protein) > 0));
 
-      const weekCalorieGoal = savedGoals.find(g => Number(g.calories) > 0)?.calories || currentGoals.calories || 2000;
-      const weekProteinGoal = savedGoals.find(g => Number(g.protein) > 0)?.protein || currentGoals.protein || 150;
+      const calorieGoal = savedGoals.find(g => Number(g.calories) > 0)?.calories || currentGoals.calories || 1600;
+      const proteinGoal = savedGoals.find(g => Number(g.protein) > 0)?.protein || currentGoals.protein || 100;
 
-      renderWeeklyNutritionBars(calorieChart, rows, 'calories', Number(weekCalorieGoal));
-      renderWeeklyNutritionBars(proteinChart, rows, 'protein', Number(weekProteinGoal));
+      renderWeeklyNutritionBars(calorieChart, rows, 'calories', Number(calorieGoal));
+      renderWeeklyNutritionBars(proteinChart, rows, 'protein', Number(proteinGoal));
     }
 
     function niceCeiling(value, step) {
@@ -4201,8 +4353,8 @@
         const value = Number(row[metric]) || 0;
         const height = value > 0 ? Math.max(2, Math.min(100, (value / maxValue) * 100)) : 0;
         const valueLabel = metric === 'calories' ? Math.round(value).toLocaleString() : `${round1(value)}g`;
-        const dayLabel = row.date.toLocaleDateString('en-US', { weekday: 'short' });
-        const dateLabel = row.date.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
+        const dayLabel = row.shortLabel || row.date.toLocaleDateString('en-US', { weekday: 'short' });
+        const dateLabel = row.subLabel || row.date.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
         const statusClass = nutritionBarStatus(value, goal, metric);
 
         return `
@@ -4220,7 +4372,7 @@
       container.innerHTML = `
         <div class="nutrition-chart-grid">
           ${yAxisHtml}
-          <div class="nutrition-bars-area">
+          <div class="nutrition-bars-area" style="grid-template-columns:repeat(${rows.length},minmax(0,1fr));">
             ${gridHtml}
             ${barsHtml}
           </div>
