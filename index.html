@@ -1787,6 +1787,18 @@
   .app-tour-copy { font-size:.73rem; }
 }
 
+
+    /* INLINE MEAL FOOD SEARCH */
+    .nutrition-search-slot:empty { display:none; }
+    .nutrition-search-slot:not(:empty) { display:block; }
+    .nutrition-search-slot .nutrition-search-panel {
+      margin: 8px 0 10px;
+      padding: 10px;
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      background: rgba(13,21,39,.72);
+    }
+
 </style>
 <!-- iPhone / iPad -->
 <link href="schmokefit-icon.png" rel="apple-touch-icon"/>
@@ -3206,6 +3218,15 @@
     function renderMealSections() {
       const container = document.getElementById('mealSections');
       if (!container) return;
+
+      // The food search panel is shared between meals. If it is currently
+      // sitting inside a meal section, move it out before rebuilding the list.
+      const sharedSearchPanel = document.getElementById('nutritionSearchPanel');
+      const searchWasOpen = sharedSearchPanel?.classList.contains('open');
+      if (sharedSearchPanel && container.contains(sharedSearchPanel)) {
+        container.insertAdjacentElement('afterend', sharedSearchPanel);
+      }
+
       const log = getNutritionLog();
       container.innerHTML = nutritionMeals.map(meal => {
         const items = log[meal] || [];
@@ -3219,8 +3240,15 @@
             <div class="food-amount">${formatLoggedFoodAmount(item)}</div>
             <button class="food-remove" onclick="event.stopPropagation(); removeFoodItem('${meal}', ${idx})" aria-label="Remove ${escapeHtml(item.name)}">✕</button>
           </div>`).join('') : '<div class="nutrition-empty">No foods logged.</div>';
-        return `<div class="meal-section"><div class="meal-header"><div class="meal-title">${meal.toUpperCase()}</div><button class="meal-add-btn" onclick="openFoodSearch('${meal}')">+ ADD</button></div>${rows}</div>`;
+        return `<div class="meal-section" data-meal="${meal}"><div class="meal-header"><div class="meal-title">${meal.toUpperCase()}</div><button class="meal-add-btn" onclick="openFoodSearch('${meal}')">+ ADD</button></div><div class="nutrition-search-slot" id="nutritionSearchSlot-${meal}"></div>${rows}</div>`;
       }).join('');
+
+      // If the user was searching when the meal list rerendered, put the
+      // panel back under the meal they were adding food to.
+      if (searchWasOpen && activeNutritionMeal) {
+        const slot = document.getElementById(`nutritionSearchSlot-${activeNutritionMeal}`);
+        if (slot && sharedSearchPanel) slot.appendChild(sharedSearchPanel);
+      }
     }
 
     function round1(n) {
@@ -3233,9 +3261,20 @@
 
     function openFoodSearch(meal) {
       activeNutritionMeal = meal;
+      const panel = document.getElementById('nutritionSearchPanel');
+      const slot = document.getElementById(`nutritionSearchSlot-${meal}`);
       document.getElementById('searchMealLabel').innerText = `ADD TO ${meal.toUpperCase()}`;
-      document.getElementById('nutritionSearchPanel').classList.add('open');
-      document.getElementById('foodSearchInput').focus();
+
+      if (slot && panel) slot.appendChild(panel);
+      panel?.classList.add('open');
+
+      const input = document.getElementById('foodSearchInput');
+      if (input) {
+        setTimeout(() => {
+          input.focus();
+          input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 60);
+      }
     }
 
     async function closeFoodSearch() {
@@ -3576,10 +3615,34 @@
       if (unit) unit.value = 'g';
     }
 
+    let liveFoodSearchTimer = null;
+    let liveFoodSearchRequestId = 0;
+
+    function queueLiveFoodSearch() {
+      clearTimeout(liveFoodSearchTimer);
+      const input = document.getElementById('foodSearchInput');
+      const results = document.getElementById('foodSearchResults');
+      const query = String(input?.value || '').trim();
+
+      if (query.length < 2) {
+        if (results) {
+          results.innerHTML = query.length
+            ? '<div class="nutrition-empty">Type at least 2 characters to search.</div>'
+            : '';
+        }
+        return;
+      }
+
+      liveFoodSearchTimer = setTimeout(() => {
+        searchUsdaFoods();
+      }, 450);
+    }
+
     async function searchUsdaFoods() {
       const input = document.getElementById('foodSearchInput');
       const results = document.getElementById('foodSearchResults');
       const query = input.value.trim();
+      const requestId = ++liveFoodSearchRequestId;
       if (!query) {
         results.innerHTML = '<div class="nutrition-empty">Enter a food to search.</div>';
         return;
@@ -3590,6 +3653,7 @@
         const response = await fetch(url);
         if (!response.ok) throw new Error(`USDA request failed (${response.status})`);
         const data = await response.json();
+        if (requestId !== liveFoodSearchRequestId) return;
         const foods = Array.isArray(data.foods) ? data.foods : [];
         if (!foods.length) {
           results.innerHTML = '<div class="nutrition-empty">No matching foods found.</div>';
@@ -4128,8 +4192,12 @@
     window.onload = function() {
       const foodSearchInput = document.getElementById('foodSearchInput');
       if (foodSearchInput) {
+        foodSearchInput.addEventListener('input', queueLiveFoodSearch);
         foodSearchInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') searchUsdaFoods();
+          if (e.key === 'Enter') {
+            clearTimeout(liveFoodSearchTimer);
+            searchUsdaFoods();
+          }
         });
       }
 
