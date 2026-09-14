@@ -1799,6 +1799,25 @@
       background: rgba(13,21,39,.72);
     }
 
+
+    /* EDITABLE + CUSTOM MEALS */
+    .meal-title-row{display:flex;align-items:center;gap:5px;min-width:0}
+    .meal-name-edit{border:0;background:transparent;color:var(--text-muted);font-size:.75rem;padding:4px 5px;cursor:pointer;border-radius:6px}
+    .meal-name-edit:hover{background:rgba(148,163,184,.10);color:var(--text)}
+    .add-custom-meal-wrap{text-align:center;margin:10px 0 4px}
+    .add-custom-meal-btn{border:1px dashed var(--input-border);border-radius:9px;background:transparent;color:var(--text-muted);padding:8px 12px;font-size:.65rem;font-weight:900;cursor:pointer}
+
+
+    .meal-name-remove{
+      border:0;background:transparent;color:#ef4444;font-size:.68rem;
+      padding:4px 5px;cursor:pointer;border-radius:6px;opacity:.72
+    }
+    .meal-name-remove:hover{background:rgba(239,68,68,.10);opacity:1}
+    .meal-archived-badge{
+      font-size:.48rem;font-weight:900;letter-spacing:.04em;color:var(--text-muted);
+      border:1px solid var(--input-border);border-radius:999px;padding:2px 5px
+    }
+
 </style>
 <!-- iPhone / iPad -->
 <link href="schmokefit-icon.png" rel="apple-touch-icon"/>
@@ -3168,8 +3187,9 @@
     }
 
     function nutritionTotalsFromLog(log) {
-      return nutritionMeals.reduce((totals, meal) => {
-        (log[meal] || []).forEach(item => {
+      return Object.values(log || {}).reduce((totals, items) => {
+        if (!Array.isArray(items)) return totals;
+        items.forEach(item => {
           totals.calories += Number(item.calories) || 0;
           totals.protein += Number(item.protein) || 0;
           totals.carbs += Number(item.carbs) || 0;
@@ -3215,6 +3235,87 @@
       renderMealSections();
     }
 
+    const nutritionMealDefinitionsKey = 'schmokefit_meal_definitions';
+    const defaultNutritionMealDefinitions = [
+      {id:'Breakfast', name:'Breakfast', active:true},
+      {id:'Lunch', name:'Lunch', active:true},
+      {id:'Dinner', name:'Dinner', active:true},
+      {id:'Snacks', name:'Snacks', active:true}
+    ];
+
+    function getNutritionMealDefinitions() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(nutritionMealDefinitionsKey) || 'null');
+        if (Array.isArray(saved) && saved.length) {
+          // Migrate the first custom-meal build, which used lowercase IDs,
+          // back to the nutrition log's original Breakfast/Lunch/Dinner/Snacks keys.
+          const legacyIds = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', snacks:'Snacks' };
+          let changed = false;
+          const normalized = saved.map(meal => {
+            const mappedId = legacyIds[meal.id] || meal.id;
+            if (mappedId !== meal.id || typeof meal.active !== 'boolean') changed = true;
+            return { ...meal, id:mappedId, active: meal.active !== false };
+          });
+          if (changed) saveNutritionMealDefinitions(normalized);
+          return normalized;
+        }
+      } catch(e) {}
+      return JSON.parse(JSON.stringify(defaultNutritionMealDefinitions));
+    }
+    function saveNutritionMealDefinitions(meals) {
+      localStorage.setItem(nutritionMealDefinitionsKey, JSON.stringify(meals));
+    }
+    function nutritionMealName(id) {
+      return getNutritionMealDefinitions().find(m=>m.id===id)?.name ||
+        defaultNutritionMealDefinitions.find(m=>m.id===id)?.name || String(id);
+    }
+    function renameNutritionMeal(id) {
+      const meals=getNutritionMealDefinitions(), meal=meals.find(m=>m.id===id);
+      if(!meal) return;
+      const entered=prompt('Meal name:', meal.name);
+      if(entered===null || !entered.trim()) return;
+      meal.name=entered.trim().slice(0,30);
+      saveNutritionMealDefinitions(meals); renderMealSections();
+    }
+    function addNutritionMeal() {
+      const entered=prompt('Name your new meal:', 'Morning Snack');
+      if(entered===null || !entered.trim()) return;
+      const meals=getNutritionMealDefinitions();
+      const id=`custom_${Date.now()}`;
+      meals.push({id, name:entered.trim().slice(0,30), active:true});
+      saveNutritionMealDefinitions(meals);
+      const log=getNutritionLog();
+      if(!Array.isArray(log[id])) log[id]=[];
+      saveNutritionLog(log);
+      renderMealSections();
+      setTimeout(()=>document.querySelector(`.meal-section[data-meal="${id}"]`)?.scrollIntoView({behavior:'smooth',block:'center'}),50);
+    }
+
+    function removeNutritionMeal(id) {
+      const meals = getNutritionMealDefinitions();
+      const meal = meals.find(m => m.id === id);
+      if (!meal) return;
+
+      const activeCount = meals.filter(m => m.active !== false).length;
+      if (activeCount <= 1) {
+        alert('Keep at least one meal in your daily tracker.');
+        return;
+      }
+
+      const ok = confirm(`Remove "${meal.name}" from your regular meal list?\n\nAny food you have already logged under this meal will NOT be deleted.`);
+      if (!ok) return;
+
+      meal.active = false;
+      saveNutritionMealDefinitions(meals);
+
+      if (activeNutritionMeal === id) {
+        const panel = document.getElementById('nutritionSearchPanel');
+        panel?.classList.remove('open');
+      }
+      renderMealSections();
+      updateNutritionDashboard();
+    }
+
     function renderMealSections() {
       const container = document.getElementById('mealSections');
       if (!container) return;
@@ -3228,7 +3329,12 @@
       }
 
       const log = getNutritionLog();
-      container.innerHTML = nutritionMeals.map(meal => {
+      const visibleMeals = getNutritionMealDefinitions().filter(mealDef =>
+        mealDef.active !== false || (log[mealDef.id] || []).length > 0
+      );
+      container.innerHTML = visibleMeals.map(mealDef => {
+        const meal = mealDef.id;
+        const mealLabel = mealDef.name;
         const items = log[meal] || [];
         const rows = items.length ? items.map((item, idx) => `
           <div class="food-row" onclick="openFoodEdit('${meal}', ${idx})" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openFoodEdit('${meal}', ${idx});}">
@@ -3240,8 +3346,8 @@
             <div class="food-amount">${formatLoggedFoodAmount(item)}</div>
             <button class="food-remove" onclick="event.stopPropagation(); removeFoodItem('${meal}', ${idx})" aria-label="Remove ${escapeHtml(item.name)}">✕</button>
           </div>`).join('') : '<div class="nutrition-empty">No foods logged.</div>';
-        return `<div class="meal-section" data-meal="${meal}"><div class="meal-header"><div class="meal-title">${meal.toUpperCase()}</div><button class="meal-add-btn" onclick="openFoodSearch('${meal}')">+ ADD</button></div><div class="nutrition-search-slot" id="nutritionSearchSlot-${meal}"></div>${rows}</div>`;
-      }).join('');
+        return `<div class="meal-section" data-meal="${meal}"><div class="meal-header"><div class="meal-title-row"><div class="meal-title">${escapeHtml(mealLabel).toUpperCase()}</div>${mealDef.active === false ? '<span class="meal-archived-badge">REMOVED</span>' : ''}<button class="meal-name-edit" type="button" onclick="renameNutritionMeal('${meal}')" aria-label="Rename ${escapeHtml(mealLabel)}">✎</button>${mealDef.active !== false ? `<button class="meal-name-remove" type="button" onclick="removeNutritionMeal('${meal}')" aria-label="Remove ${escapeHtml(mealLabel)}">✕</button>` : ''}</div>${mealDef.active !== false ? `<button class="meal-add-btn" onclick="openFoodSearch('${meal}')">+ ADD</button>` : ''}</div><div class="nutrition-search-slot" id="nutritionSearchSlot-${meal}"></div>${rows}</div>`;
+      }).join('') + `<div class="add-custom-meal-wrap"><button class="add-custom-meal-btn" type="button" onclick="addNutritionMeal()">+ ADD ANOTHER MEAL</button></div>`;
 
       // If the user was searching when the meal list rerendered, put the
       // panel back under the meal they were adding food to.
@@ -3263,7 +3369,7 @@
       activeNutritionMeal = meal;
       const panel = document.getElementById('nutritionSearchPanel');
       const slot = document.getElementById(`nutritionSearchSlot-${meal}`);
-      document.getElementById('searchMealLabel').innerText = `ADD TO ${meal.toUpperCase()}`;
+      document.getElementById('searchMealLabel').innerText = `ADD TO ${nutritionMealName(meal).toUpperCase()}`;
 
       if (slot && panel) slot.appendChild(panel);
       panel?.classList.add('open');
@@ -3884,7 +3990,7 @@
     function upsertNutritionHistoryEntry(dateStamp, showAlert = false) {
       const log = getNutritionLogForDate(dateStamp);
       const totals = nutritionTotalsFromLog(log);
-      const hasFood = nutritionMeals.some(meal => (log[meal] || []).length > 0);
+      const hasFood = Object.values(log || {}).some(items => Array.isArray(items) && items.length > 0);
 
       // Do not create empty nutrition-history cards for days with no food logged.
       if (!hasFood) return false;
